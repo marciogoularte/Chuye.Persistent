@@ -30,7 +30,6 @@ namespace Chuye.Persistent.NHibernate {
         }
 
         public virtual IQueryable<TEntry> Of<TEntry>() {
-            //return new NhQueryable<TEntry>(EnsureSession().GetSessionImplementation());
             return EnsureSession().Query<TEntry>();
         }
 

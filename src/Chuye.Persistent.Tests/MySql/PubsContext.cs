@@ -12,7 +12,7 @@ using FluentNHibernate.Cfg.Db;
 using NHibernate.Event.Default;
 using NHibernate.Event;
 
-namespace Chuye.Persistent.Tests {
+namespace Chuye.Persistent.Tests.MySql {
     class PubsContext : NHibernateRepositoryContext {
         private static readonly ISessionFactory _dbFactory;
         private static readonly EventDispatcher _eventDispatcher;
