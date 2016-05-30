@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentNHibernate.Mapping;
 
-namespace Chuye.Persistent.Tests {
+namespace Chuye.Persistent.Tests.MySql {
     public class Job {
         public virtual Int16 Job_id { get; set; }
         public virtual String Job_desc { get; set; }

@@ -12,6 +12,15 @@ namespace Chuye.Persistent.NHibernate {
     public class NHibernateRepository<TEntry> : Repository<TEntry> where TEntry : class {
         private readonly NHibernateRepositoryContext _context = null;
 
+        public override IQueryable<TEntry> All {
+            get {
+                return _context.Of<TEntry>();
+            }
+        }
+
+        public NHibernateRepositoryContext NHibernateRepositoryContext {
+            get { return _context; }
+        }
 
         public NHibernateRepository(IRepositoryContext context)
             : base(context) {
@@ -19,14 +28,6 @@ namespace Chuye.Persistent.NHibernate {
             if (_context == null) {
                 throw new ArgumentOutOfRangeException("context",
                     "Expect NHibernateRepositoryContext but provided " + context.GetType().FullName);
-            }
-
-            //Check IEntry is IEntry<TKey>
-        }
-
-        public override IQueryable<TEntry> All {
-            get {
-                return _context.Of<TEntry>();
             }
         }
 

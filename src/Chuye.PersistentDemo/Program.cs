@@ -11,8 +11,8 @@ namespace Chuye.PersistentDemo {
         static void Main(string[] args) {
             Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
 
-            using (var ctx = new PubsContext()) {
-                var repo = new NHibernateRepository<Job>(ctx);
+            using (var context = new PubsContext()) {
+                var repo = new NHibernateRepository<Job>(context);
                 foreach (var item in repo.All) {
                     Console.WriteLine("{0} {1} {2} {3}",
                         item.Job_id, item.Job_desc, item.Min_lvl, item.Max_lvl);

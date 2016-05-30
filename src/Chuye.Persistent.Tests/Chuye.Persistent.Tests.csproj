@@ -46,6 +46,18 @@
       <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MongoDB.Bson, Version=2.2.4.26, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.2.4\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.2.4.26, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.2.4\lib\net45\MongoDB.Driver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.2.4.26, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.2.4\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
       <Private>True</Private>
@@ -78,8 +90,11 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="PubsContext.cs" />
-    <Compile Include="PubsMapping.cs" />
+    <Compile Include="MongoRepositoryTest.cs" />
+    <Compile Include="Mongo\PubsContext.cs" />
+    <Compile Include="Mongo\PubsEntities.cs" />
+    <Compile Include="MySql\PubsContext.cs" />
+    <Compile Include="MySql\PubsEntites.cs" />
     <Compile Include="NHibernateRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -88,6 +103,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Chuye.Persistent.Mongo\Chuye.Persistent.Mongo.csproj">
+      <Project>{27f0f37a-fb25-4e4d-9c56-9cd5caa03008}</Project>
+      <Name>Chuye.Persistent.Mongo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chuye.Persistent.NHibernate\Chuye.Persistent.NHibernate.csproj">
       <Project>{2aa2580b-69f5-4537-9ab2-9a426092ae76}</Project>
       <Name>Chuye.Persistent.NHibernate</Name>
@@ -98,8 +117,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Pubs_MySQL.sql" />
+    <Content Include="MySql\Pubs_MySQL.sql" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

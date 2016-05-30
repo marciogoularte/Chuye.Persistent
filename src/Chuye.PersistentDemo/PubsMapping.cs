@@ -7,10 +7,10 @@ using FluentNHibernate.Mapping;
 
 namespace Chuye.PersistentDemo {
     public class Job {
-        public virtual Int16                 Job_id               { get; set; }
-        public virtual String                Job_desc             { get; set; }
-        public virtual Byte                  Min_lvl              { get; set; }
-        public virtual Byte                  Max_lvl              { get; set; }
+        public virtual Int16 Job_id { get; set; }
+        public virtual String Job_desc { get; set; }
+        public virtual Byte Min_lvl { get; set; }
+        public virtual Byte Max_lvl { get; set; }
     }
 
     public class JobMap : ClassMap<Job> {
