@@ -52,6 +52,10 @@ namespace Chuye.Persistent.Mongo {
             //return collection.Find(queryDocument).FirstOrDefault();
         }
 
+        public override IEnumerable<TEntry> Retrive(params object[] keys) {
+            throw new NotImplementedException();
+        }
+
         private IMongoCollection<TEntry> GetCollection() {
             var collectionName = _mapper.Map<TEntry>();
             var collection = _context.Database.GetCollection<TEntry>(collectionName);

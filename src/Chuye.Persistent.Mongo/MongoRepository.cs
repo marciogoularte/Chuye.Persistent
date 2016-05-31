@@ -56,6 +56,10 @@ namespace Chuye.Persistent.Mongo {
             return collection;
         }
 
+        public override IEnumerable<TEntry> Retrive(params object[] keys) {
+            throw new NotImplementedException();
+        }
+
         public override IEnumerable<TEntry> Retrive<TMember>(String field, params TMember[] keys) {
             var collection = GetCollection();
             return collection.Find(new FilterDefinitionBuilder<TEntry>()

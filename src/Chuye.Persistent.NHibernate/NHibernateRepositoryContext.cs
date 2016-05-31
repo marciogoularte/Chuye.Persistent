@@ -33,6 +33,10 @@ namespace Chuye.Persistent.NHibernate {
             return EnsureSession().Query<TEntry>();
         }
 
+        internal ISessionFactory SessionFactory {
+            get { return _sessionFactory; }
+        }
+
         public NHibernateRepositoryContext(ISessionFactory sessionFactory) {
             _sessionFactory = sessionFactory;
         }

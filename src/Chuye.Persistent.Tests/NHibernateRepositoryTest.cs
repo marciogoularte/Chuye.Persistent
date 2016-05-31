@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Chuye.Persistent.NHibernate;
 using Xunit;
 using Chuye.Persistent.Tests.MySql;
+using System.Diagnostics;
 
 namespace Chuye.Persistent.Tests {
     public class NHibernateRepositoryTest {
@@ -21,6 +22,16 @@ namespace Chuye.Persistent.Tests {
         }
 
         [Fact]
+        public void Retrive_via_primaryKey_list() {
+            var repo = new NHibernateRepository<Roysched>(_context);
+            var allKeys = repo.All.Select(x => x.Id).ToArray();
+            var allItems = repo.Retrive(allKeys).ToArray();
+
+            Assert.NotEmpty(allKeys);
+            Assert.Equal(allKeys.Length, allItems.Length);
+        }
+
+        [Fact]
         public void Retrive_via_field() {
             var repo = new NHibernateRepository<Job>(_context);
             var theSpecials = repo.Retrive("Max_lvl", (Byte)Max_lvl_HasValue);
@@ -28,10 +39,30 @@ namespace Chuye.Persistent.Tests {
         }
 
         [Fact]
+        public void Retrive_via_field_list() {
+            var repo = new NHibernateRepository<Roysched>(_context);
+            var allKeys = repo.All.Select(x => x.Id).ToArray();
+            var allItems = repo.Retrive(x => x.Id, allKeys).ToArray();
+
+            Assert.NotEmpty(allKeys);
+            Assert.Equal(allKeys.Length, allItems.Length);
+        }
+
+        [Fact]
         public void Retrive_via_expression() {
             var repo = new NHibernateRepository<Job>(_context);
             var theSpecials = repo.Retrive(j => j.Max_lvl, (Byte)Max_lvl_HasValue);
             Assert.NotEmpty(theSpecials);
+        }
+
+        [Fact]
+        public void Retrive_via_expression_contains() {
+            var repo = new NHibernateRepository<Roysched>(_context);
+            var allKeys = repo.All.Select(x => x.Id).ToArray();
+            var allItems = repo.All.Where(r => allKeys.Contains(r.Id)).ToArray();
+
+            Assert.NotEmpty(allKeys);
+            Assert.Equal(allKeys.Length, allItems.Length);
         }
 
         [Fact]
