@@ -71,8 +71,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MongoProgram.cs" />
     <Compile Include="Mongo\PubsContext.cs" />
     <Compile Include="Mongo\PubsEntities.cs" />
+    <Compile Include="MysqlProgram.cs" />
     <Compile Include="MySql\PubsContext.cs" />
     <Compile Include="MySql\PubsEntites.cs" />
     <Compile Include="Program.cs" />
