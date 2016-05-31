@@ -20,7 +20,7 @@ namespace Chuye.Persistent {
         public abstract TReutrn Fetch<TReutrn>(Func<IQueryable<TEntry>, TReutrn> query);
         public abstract Boolean Any(params Expression<Func<TEntry, Boolean>>[] predicates);
         public abstract TEntry Retrive(Object id);
-        //public abstract IEnumerable<TEntry> Retrive(params Object[] keys);
+        public abstract IEnumerable<TEntry> Retrive(Object[] keys);
         public abstract IEnumerable<TEntry> Retrive<TMember>(String field, params TMember[] keys);
         public abstract IEnumerable<TEntry> Retrive<TMember>(Expression<Func<TEntry, TMember>> selector, params TMember[] keys);
 

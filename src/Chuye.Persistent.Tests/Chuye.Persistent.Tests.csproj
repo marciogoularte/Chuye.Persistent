@@ -90,6 +90,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="MongoRepositoryTest`.cs" />
     <Compile Include="MongoRepositoryTest.cs" />
     <Compile Include="Mongo\PubsContext.cs" />
     <Compile Include="Mongo\PubsEntities.cs" />

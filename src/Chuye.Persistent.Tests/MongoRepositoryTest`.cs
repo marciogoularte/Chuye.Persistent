@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Chuye.Persistent.NHibernate;
 using Xunit;
-using Chuye.Persistent.Tests.MySql;
-using System.Diagnostics;
+using Chuye.Persistent.Mongo;
+using Chuye.Persistent.Tests.Mongo;
+using MongoDB.Bson;
 
 namespace Chuye.Persistent.Tests {
-    public class NHibernateRepositoryTest {
-        private const Byte Max_lvl_HasValue = (Byte)100;
+    public class MongoRepositoryTest_ {
+        private const Int32 Hirange = 2000;
         private readonly PubsContext _context;
 
-        public NHibernateRepositoryTest() {
+        public MongoRepositoryTest_() {
             _context = new PubsContext();
         }
 
         [Fact]
         public void Retrive_via_primaryKey() {
-            var repo = new NHibernateRepository<Job>(_context);
-            var theFirstOne = repo.Retrive((Int16)1);
+            var repo = new MongoRepository<Roysched, String>(_context);
+            var theFirstOne = repo.Retrive("PC8888");
         }
 
         [Fact]
         public void Retrive_via_primaryKey_list() {
-            var repo = new NHibernateRepository<Roysched>(_context);
+            var repo = new MongoRepository<Roysched, String>(_context);
             var allKeys = repo.All.Select(x => x.Id).ToArray();
             var allItems = repo.Retrive(allKeys).ToArray();
 
@@ -33,14 +33,14 @@ namespace Chuye.Persistent.Tests {
 
         [Fact]
         public void Retrive_via_field() {
-            var repo = new NHibernateRepository<Job>(_context);
-            var theSpecials = repo.Retrive("Max_lvl", (Byte)Max_lvl_HasValue);
+            var repo = new MongoRepository<Roysched, String>(_context);
+            var theSpecials = repo.Retrive("Hirange", Hirange);
             Assert.NotEmpty(theSpecials);
         }
 
         [Fact]
         public void Retrive_via_field_list() {
-            var repo = new NHibernateRepository<Roysched>(_context);
+            var repo = new MongoRepository<Roysched, String>(_context);
             var allKeys = repo.All.Select(x => x.Id).ToArray();
             var allItems = repo.Retrive(x => x.Id, allKeys).ToArray();
 
@@ -50,14 +50,14 @@ namespace Chuye.Persistent.Tests {
 
         [Fact]
         public void Retrive_via_expression() {
-            var repo = new NHibernateRepository<Job>(_context);
-            var theSpecials = repo.Retrive(j => j.Max_lvl, (Byte)Max_lvl_HasValue);
+            var repo = new MongoRepository<Roysched, String>(_context);
+            var theSpecials = repo.Retrive(j => j.Hirange, Hirange);
             Assert.NotEmpty(theSpecials);
         }
 
         [Fact]
         public void Retrive_via_expression_contains() {
-            var repo = new NHibernateRepository<Roysched>(_context);
+            var repo = new MongoRepository<Roysched, String>(_context);
             var allKeys = repo.All.Select(x => x.Id).ToArray();
             var allItems = repo.All.Where(r => allKeys.Contains(r.Id)).ToArray();
 
@@ -67,8 +67,8 @@ namespace Chuye.Persistent.Tests {
 
         [Fact]
         public void Retrive_via_queryable() {
-            var repo = new NHibernateRepository<Job>(_context);
-            var query = repo.All.Where(r => r.Max_lvl == Max_lvl_HasValue);
+            var repo = new MongoRepository<Roysched, String>(_context);
+            var query = repo.All.Where(r => r.Hirange == Hirange);
             var theSpecials = repo.Fetch(_ => query);
             Assert.NotEmpty(theSpecials);
         }

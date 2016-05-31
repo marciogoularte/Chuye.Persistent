@@ -57,10 +57,20 @@ namespace Chuye.Persistent.NHibernate {
             return SafeExecute(session => session.Get<TEntry>(id));
         }
 
+        public override IEnumerable<TEntry> Retrive(params object[] keys) {
+            var metadata = _context.SessionFactory.GetClassMetadata(typeof(TEntry));
+            return SafeExecute(session => {
+                var criteria = session.CreateCriteria<TEntry>();
+                criteria.Add(Restrictions.In(metadata.IdentifierPropertyName, keys));
+                return criteria.List<TEntry>();
+            });
+        }
+
+        //应使用实体属性名而非数据库列名
         public override IEnumerable<TEntry> Retrive<TMember>(String field, params TMember[] keys) {
             return SafeExecute(session => {
                 var criteria = session.CreateCriteria<TEntry>();
-                criteria.Add(Restrictions.In(field, keys.ToArray()));
+                criteria.Add(Restrictions.In(field, keys));
                 return criteria.List<TEntry>();
             });
         }

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 
 namespace Chuye.Persistent.Mongo {
-
-    public interface IMongoAggregate<TKey>  {
+    public interface IMongoId<TKey>  {
         TKey Id { get; set; }
     }
-    public interface IMongoAggregate : IMongoAggregate<ObjectId> {
+    public interface IMongoId : IMongoId<ObjectId> {
     }
 }

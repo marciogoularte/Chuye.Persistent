@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MongoAggregate.cs" />
+    <Compile Include="MongoId.cs" />
     <Compile Include="MongoRepository`.cs" />
     <Compile Include="MongoRepositoryMapper.cs" />
     <Compile Include="MongoRepository.cs" />
