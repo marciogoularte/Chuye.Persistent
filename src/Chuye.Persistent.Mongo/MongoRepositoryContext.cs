@@ -36,7 +36,7 @@ namespace Chuye.Persistent.Mongo {
         }
 
         public void Dispose() {
-            throw new NotImplementedException();
+
         }
 
         public void Rollback() {
