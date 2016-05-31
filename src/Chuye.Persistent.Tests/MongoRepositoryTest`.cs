@@ -1,0 +1,76 @@
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using Xunit;
+using Chuye.Persistent.Mongo;
+using Chuye.Persistent.Tests.Mongo;
+using MongoDB.Bson;
+
+namespace Chuye.Persistent.Tests {
+    public class MongoRepositoryTest_ {
+        private const Int32 Hirange = 2000;
+        private readonly PubsContext _context;
+
+        public MongoRepositoryTest_() {
+            _context = new PubsContext();
+        }
+
+        [Fact]
+        public void Retrive_via_primaryKey() {
+            var repo = new MongoRepository<Roysched, String>(_context);
+            var theFirstOne = repo.Retrive("PC8888");
+        }
+
+        [Fact]
+        public void Retrive_via_primaryKey_list() {
+            var repo = new MongoRepository<Roysched, String>(_context);
+            var allKeys = repo.All.Select(x => x.Id).ToArray();
+            var allItems = repo.Retrive(allKeys).ToArray();
+
+            Assert.NotEmpty(allKeys);
+            Assert.Equal(allKeys.Length, allItems.Length);
+        }
+
+        [Fact]
+        public void Retrive_via_field() {
+            var repo = new MongoRepository<Roysched, String>(_context);
+            var theSpecials = repo.Retrive("Hirange", Hirange);
+            Assert.NotEmpty(theSpecials);
+        }
+
+        [Fact]
+        public void Retrive_via_field_list() {
+            var repo = new MongoRepository<Roysched, String>(_context);
+            var allKeys = repo.All.Select(x => x.Id).ToArray();
+            var allItems = repo.Retrive(x => x.Id, allKeys).ToArray();
+
+            Assert.NotEmpty(allKeys);
+            Assert.Equal(allKeys.Length, allItems.Length);
+        }
+
+        [Fact]
+        public void Retrive_via_expression() {
+            var repo = new MongoRepository<Roysched, String>(_context);
+            var theSpecials = repo.Retrive(j => j.Hirange, Hirange);
+            Assert.NotEmpty(theSpecials);
+        }
+
+        [Fact]
+        public void Retrive_via_expression_contains() {
+            var repo = new MongoRepository<Roysched, String>(_context);
+            var allKeys = repo.All.Select(x => x.Id).ToArray();
+            var allItems = repo.All.Where(r => allKeys.Contains(r.Id)).ToArray();
+
+            Assert.NotEmpty(allKeys);
+            Assert.Equal(allKeys.Length, allItems.Length);
+        }
+
+        [Fact]
+        public void Retrive_via_queryable() {
+            var repo = new MongoRepository<Roysched, String>(_context);
+            var query = repo.All.Where(r => r.Hirange == Hirange);
+            var theSpecials = repo.Fetch(_ => query);
+            Assert.NotEmpty(theSpecials);
+        }
+    }
+}
