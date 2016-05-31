@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentNHibernate.Mapping;
 
-namespace Chuye.PersistentDemo {
+namespace PersistentDemo.MySql {
     public class Job {
         public virtual Int16 Job_id { get; set; }
         public virtual String Job_desc { get; set; }
@@ -32,10 +32,11 @@ namespace Chuye.PersistentDemo {
 
     public class RoyschedMap : ClassMap<Roysched> {
         public RoyschedMap() {
-            Id(x => x.Title_id).GeneratedBy.Assigned();
+            Id(x => x.Title_id).Column("Title_id").GeneratedBy.Assigned();
             Map(x => x.Lorange);
             Map(x => x.Hirange);
             Map(x => x.Royalty);
         }
     }
+
 }

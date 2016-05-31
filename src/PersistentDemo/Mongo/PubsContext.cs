@@ -7,8 +7,8 @@ using System.Configuration;
 using Chuye.Persistent.Mongo;
 using MongoDB.Driver;
 
-namespace Chuye.Persistent.Tests.Mongo {
-    class PubsContext : MongoRepositoryContext {
+namespace PersistentDemo.Mongo {
+    public class PubsContext : MongoRepositoryContext {
         private static MongoUrl _mongoUrl;
 
         static PubsContext() {

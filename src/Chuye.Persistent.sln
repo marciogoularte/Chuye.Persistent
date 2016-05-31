@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.25302.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent", "Chuye.Persistent\Chuye.Persistent.csproj", "{C92A79FA-9D1E-41E0-860A-D6A1B858EFC0}"
 EndProject
@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent.NHibernate
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent.Tests", "Chuye.Persistent.Tests\Chuye.Persistent.Tests.csproj", "{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.PersistentDemo", "Chuye.PersistentDemo\Chuye.PersistentDemo.csproj", "{FF411F48-DD5E-4891-ADD3-76B9C48C2F2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistentDemo", "PersistentDemo\PersistentDemo.csproj", "{FF411F48-DD5E-4891-ADD3-76B9C48C2F2D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent.Mongo", "Chuye.Persistent.Mongo\Chuye.Persistent.Mongo.csproj", "{27F0F37A-FB25-4E4D-9C56-9CD5CAA03008}"
 EndProject

@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chuye.Persistent.NHibernate;
-using NHibernate;
-using NHibernate.Cfg;
-using NHibernate.Cfg.ConfigurationSchema;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-using NHibernate.Event.Default;
+using NHibernate;
 using NHibernate.Event;
+using NHibernate.Event.Default;
 
-namespace Chuye.PersistentDemo {
-    class PubsContext : NHibernateRepositoryContext {
+namespace PersistentDemo.MySql {
+    public class PubsContext : NHibernateRepositoryContext {
         private static readonly ISessionFactory _dbFactory;
         private static readonly EventDispatcher _eventDispatcher;
 
@@ -51,7 +46,7 @@ namespace Chuye.PersistentDemo {
         }
     }
 
-    interface IEventDispatcher {
+    public interface IEventDispatcher {
         event EventHandler<PostLoadEvent> PostLoad;
     }
 
