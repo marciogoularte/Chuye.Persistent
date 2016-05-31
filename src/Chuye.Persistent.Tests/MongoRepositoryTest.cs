@@ -3,8 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using Xunit;
 using Chuye.Persistent.Mongo;
-using Chuye.Persistent.Tests.Mongo;
 using MongoDB.Bson;
+using PersistentDemo.Mongo;
 
 namespace Chuye.Persistent.Tests {
     public class MongoRepositoryTest {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using Chuye.Persistent.Mongo;
 
-namespace Chuye.Persistent.Tests.Mongo {
+namespace PersistentDemo.Mongo {
     public class Job: IMongoId {
         public ObjectId Id { get; set; }
         public virtual Int16 Job_id { get; set; }

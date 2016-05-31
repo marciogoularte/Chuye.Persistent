@@ -3,8 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Chuye.Persistent.NHibernate;
 using Xunit;
-using Chuye.Persistent.Tests.MySql;
-using System.Diagnostics;
+using PersistentDemo.MySql;
 
 namespace Chuye.Persistent.Tests {
     public class NHibernateRepositoryTest {
@@ -24,7 +23,7 @@ namespace Chuye.Persistent.Tests {
         [Fact]
         public void Retrive_via_primaryKey_list() {
             var repo = new NHibernateRepository<Roysched>(_context);
-            var allKeys = repo.All.Select(x => x.Id).ToArray();
+            var allKeys = repo.All.Select(x => x.Title_id).ToArray();
             var allItems = repo.Retrive(allKeys).ToArray();
 
             Assert.NotEmpty(allKeys);
@@ -41,8 +40,8 @@ namespace Chuye.Persistent.Tests {
         [Fact]
         public void Retrive_via_field_list() {
             var repo = new NHibernateRepository<Roysched>(_context);
-            var allKeys = repo.All.Select(x => x.Id).ToArray();
-            var allItems = repo.Retrive(x => x.Id, allKeys).ToArray();
+            var allKeys = repo.All.Select(x => x.Title_id).ToArray();
+            var allItems = repo.Retrive(x => x.Title_id, allKeys).ToArray();
 
             Assert.NotEmpty(allKeys);
             Assert.Equal(allKeys.Length, allItems.Length);
@@ -58,8 +57,8 @@ namespace Chuye.Persistent.Tests {
         [Fact]
         public void Retrive_via_expression_contains() {
             var repo = new NHibernateRepository<Roysched>(_context);
-            var allKeys = repo.All.Select(x => x.Id).ToArray();
-            var allItems = repo.All.Where(r => allKeys.Contains(r.Id)).ToArray();
+            var allKeys = repo.All.Select(x => x.Title_id).ToArray();
+            var allItems = repo.All.Where(r => allKeys.Contains(r.Title_id)).ToArray();
 
             Assert.NotEmpty(allKeys);
             Assert.Equal(allKeys.Length, allItems.Length);
