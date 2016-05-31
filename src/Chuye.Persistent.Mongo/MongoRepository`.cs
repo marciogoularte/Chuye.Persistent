@@ -8,7 +8,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Chuye.Persistent.Mongo {
-    public class MongoRepository<TEntry, TKey> : Repository<TEntry> where TEntry : IMongoAggregate<TKey> {
+    public class MongoRepository<TEntry, TKey> : Repository<TEntry> where TEntry : IMongoId<TKey> {
         private readonly MongoRepositoryContext _context = null;
         private readonly IMongoRepositoryMapper _mapper;
 
@@ -32,28 +32,12 @@ namespace Chuye.Persistent.Mongo {
 
         public override IQueryable<TEntry> All {
             get {
-                var collectionName = _mapper.Map<TEntry>();
-                var collection = _context.Database.GetCollection<TEntry>(collectionName);
-                return collection.AsQueryable();
+                return GetCollection().AsQueryable();
             }
         }
 
         public override TReutrn Fetch<TReutrn>(Func<IQueryable<TEntry>, TReutrn> query) {
             return query(All);
-        }
-
-        public override TEntry Retrive(Object id) {
-            //Builders<TEntry>.Filter.Eq(e => e.Id, id)
-            //return docs.Find(new FilterDefinitionBuilder<TEntry>().Eq(e => e.Id, id), new FindOptions()).Limit(1).FirstOrDefault();
-
-            var collection = GetCollection();
-            return collection.Find(new FilterDefinitionBuilder<TEntry>().Eq(e => e.Id, id), new FindOptions()).Limit(1).FirstOrDefault();
-            //var queryDocument = new BsonDocument("_id", BsonValue.Create(id));
-            //return collection.Find(queryDocument).FirstOrDefault();
-        }
-
-        public override IEnumerable<TEntry> Retrive(params object[] keys) {
-            throw new NotImplementedException();
         }
 
         private IMongoCollection<TEntry> GetCollection() {
@@ -62,16 +46,37 @@ namespace Chuye.Persistent.Mongo {
             return collection;
         }
 
+        public override TEntry Retrive(Object id) {
+            var collection = GetCollection();
+            //var queryDocument = new BsonDocument(MongoId, BsonValue.Create(id));
+            //return collection.Find(queryDocument).FirstOrDefault();
+            var filter = Builders<TEntry>.Filter.Eq(e => e.Id, (TKey) id);
+            return collection.Find(filter).SingleOrDefault();
+        }
+
+        public override IEnumerable<TEntry> Retrive(Object[] keys) {
+            if (!keys.All(k => k is TKey)) {
+                throw new ArgumentOutOfRangeException("keys");
+            }
+            var collection = GetCollection();
+            var filter = Builders<TEntry>.Filter.In((TEntry entry) => entry.Id, keys.Cast<TKey>());
+            //var filter = new FilterDefinitionBuilder<TEntry>()
+            //    .In(new StringFieldDefinition<TEntry, ObjectId>(MongoId), keys);
+            return collection.Find(filter).ToList();
+        }
+
         public override IEnumerable<TEntry> Retrive<TMember>(String field, params TMember[] keys) {
             var collection = GetCollection();
             return collection.Find(new FilterDefinitionBuilder<TEntry>()
-                .In(field,keys.Select(k => BsonValue.Create(k)))).ToList();
+                .In(field, keys.Select(k => BsonValue.Create(k)))).ToList();
         }
 
         public override IEnumerable<TEntry> Retrive<TMember>(Expression<Func<TEntry, TMember>> selector, params TMember[] keys) {
             var collection = GetCollection();
-            return collection.Find(new FilterDefinitionBuilder<TEntry>()
-                .In(selector, keys)).ToList();
+            //return collection.Find(new FilterDefinitionBuilder<TEntry>()
+            //    .In(selector, keys)).ToList();
+            var filter = Builders<TEntry>.Filter.In(selector, keys);
+            return collection.Find(filter).ToList();
         }
 
         public override void Create(TEntry entry) {
