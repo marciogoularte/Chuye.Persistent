@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Chuye.Persistent.Mongo</id>
+    <version>2.5</version>
+    <title>Chuye.Persistent.Mongo</title>
+    <authors>jusfr</authors>
+    <owners>jusfr</owners>
+    <licenseUrl>http://https://github.com/jusfr/Chuye.Persistent/blob/release/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/jusfr/Chuye.Persistent</projectUrl>
+    <iconUrl>http://static01.cloud7.com.cn/assets/7a63d1b9/content/image/chuye-site/logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Repository implement for mongo</description>
+    <releaseNotes>This is a initial release.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Chuye Mongo</tags>
+    <dependencies>
+        <dependency id="MongoDB.Driver" version="2.2.4" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\release\Chuye.Persistent.Mongo\Chuye.Persistent.dll" target="lib\net45" /> 
+    <file src="..\release\Chuye.Persistent.Mongo\Chuye.Persistent.Mongo.dll" target="lib\net45" />
+  </files>
+</package>
