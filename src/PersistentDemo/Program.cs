@@ -5,36 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Chuye.Persistent.NHibernate;
+using PersistentDemo.MySql;
 
-namespace Chuye.PersistentDemo {
+namespace PersistentDemo {
     class Program {
         static void Main(string[] args) {
             Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
-            
             Retrive_via_primaryKey_medium_scale();
         }
-
-        static void NewMethod() {
-            using (var context = new PubsContext()) {
-                var repo = new NHibernateRepository<Job>(context);
-                foreach (var item in repo.All) {
-                    Console.WriteLine("{0} {1} {2} {3}",
-                        item.Job_id, item.Job_desc, item.Min_lvl, item.Max_lvl);
-                }
-
-                var theFirstOne = repo.Retrive((Int16)1);
-                var theSpecials = repo.Retrive("Max_lvl", (Byte)10);
-                theSpecials = repo.Retrive(j => j.Max_lvl, (Byte)10);
-
-                var query = repo.All.Where(r => r.Max_lvl == 100);
-                theSpecials = repo.Fetch(_ => query);
-                foreach (var item in theSpecials) {
-                    Console.WriteLine("{0} {1} {2} {3}",
-                        item.Job_id, item.Job_desc, item.Min_lvl, item.Max_lvl);
-                }
-            }
-        }
-
+            
         static void Retrive_via_primaryKey_medium_scale() {
             using (var context = new PubsContext()) {
                 var repo = new NHibernateRepository<Roysched>(context);

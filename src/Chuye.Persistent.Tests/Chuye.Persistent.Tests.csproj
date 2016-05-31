@@ -92,10 +92,6 @@
   <ItemGroup>
     <Compile Include="MongoRepositoryTest`.cs" />
     <Compile Include="MongoRepositoryTest.cs" />
-    <Compile Include="Mongo\PubsContext.cs" />
-    <Compile Include="Mongo\PubsEntities.cs" />
-    <Compile Include="MySql\PubsContext.cs" />
-    <Compile Include="MySql\PubsEntites.cs" />
     <Compile Include="NHibernateRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -116,9 +112,10 @@
       <Project>{c92a79fa-9d1e-41e0-860a-d6a1b858efc0}</Project>
       <Name>Chuye.Persistent</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="MySql\Pubs_MySQL.sql" />
+    <ProjectReference Include="..\PersistentDemo\PersistentDemo.csproj">
+      <Project>{ff411f48-dd5e-4891-add3-76b9c48c2f2d}</Project>
+      <Name>PersistentDemo</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Choose>
