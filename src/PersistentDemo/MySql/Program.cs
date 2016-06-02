@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +42,58 @@ namespace PersistentDemo.MySql {
                 repo.Save(theOne);
                 //context.Flush();
             }
+        }
+
+        internal static void Insert_with_dapper() {
+            var stopwatch = Stopwatch.StartNew();
+            const Int32 count = 1000;
+
+            using (var db = new PetaPoco.Database("PubsMysql")) {
+                db.BeginTransaction();
+                var maxId = db.ExecuteScalar<Int32>("select ifnull( max(id),0) from person;");
+                stopwatch.Start();
+                for (int i = 0; i < count; i++) {
+                    var person = new Person {
+                        Id = ++maxId,
+                        Name = Guid.NewGuid().ToString().Substring(0, 8),
+                        Address = Guid.NewGuid().ToString(),
+                        Birth = DateTime.Now,
+                        Job_id = Math.Abs(Guid.NewGuid().GetHashCode() % 100)
+                    };
+                    db.Insert(person);
+                }
+                db.CompleteTransaction();
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Insert {0}, take {1} sec., {2:f2}/sec.",
+                count, stopwatch.Elapsed, count / stopwatch.Elapsed.TotalSeconds);
+        }
+
+        internal static void Insert_with_nhibernate() {
+            var stopwatch = Stopwatch.StartNew();
+            const Int32 count = 1000;
+
+            using (var context = new PubsContext()) {
+                context.Begin();
+                var repo = new NHibernateRepository<Person>(context);
+                var maxId = repo.All.Max(x => x.Id);
+                stopwatch.Start();
+                for (int i = 0; i < count; i++) {
+                    var person = new Person {
+                        Id = ++maxId,
+                        Name = Guid.NewGuid().ToString().Substring(0, 8),
+                        Address = Guid.NewGuid().ToString(),
+                        Birth = DateTime.Now,
+                        Job_id = Math.Abs(Guid.NewGuid().GetHashCode() % 100)
+                    };
+                    repo.Create(person);
+                }
+                //context.Flush();
+                context.Commit();
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Insert {0}, take {1} sec., {2:f2}/sec.",
+                count, stopwatch.Elapsed, count / stopwatch.Elapsed.TotalSeconds);
         }
     }
 }

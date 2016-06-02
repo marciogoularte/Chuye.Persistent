@@ -20,6 +20,14 @@ namespace PersistentDemo.MySql {
         public virtual Int32? Royalty { get; set; }
     }
 
+    public class Person {
+        public virtual Int32 Id { get; set; }
+        public virtual String Name { get; set; }
+        public virtual DateTime Birth { get; set; }
+        public virtual String Address { get; set; }
+        public virtual Int32 Job_id { get; set; }
+    }
+
     public class JobMap : ClassMap<Job> {
         public JobMap() {
             Table("jobs");
@@ -39,4 +47,13 @@ namespace PersistentDemo.MySql {
         }
     }
 
+    public class PersonMap : ClassMap<Person> {
+        public PersonMap() {
+            Id(x => x.Id)/*.GeneratedBy.Assigned()*/;
+            Map(x => x.Name);
+            Map(x => x.Birth);
+            Map(x => x.Address);
+            Map(x => x.Job_id);
+        }
+    }
 }
