@@ -35,13 +35,12 @@ namespace PersistentDemo.MySql {
                    .Database(MySQLConfiguration.Standard.ConnectionString(dbConStr))
                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<PubsContext>());
             var dbConfig = dbFluentConfig.BuildConfiguration();
-            dbConfig.SetInterceptor(new NHibernateInterceptor());
+            //dbConfig.SetInterceptor(new NHibernateInterceptor());
 
-            //尝试添加 PostLoadEventListener
-            var listeners = dbConfig.EventListeners.PostLoadEventListeners.ToList();
-            listeners.Add(_eventDispatcher.PostLoadEventListener);
-            dbConfig.EventListeners.PostLoadEventListeners = listeners.ToArray();
-
+            ////尝试添加 PostLoadEventListener
+            //var listeners = dbConfig.EventListeners.PostLoadEventListeners.ToList();
+            //listeners.Add(_eventDispatcher.PostLoadEventListener);
+            //dbConfig.EventListeners.PostLoadEventListeners = listeners.ToArray();
             return dbConfig.BuildSessionFactory();
         }
     }
