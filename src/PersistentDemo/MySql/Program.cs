@@ -31,14 +31,14 @@ namespace PersistentDemo.MySql {
 
                 theOne.Min_lvl++;
                 repo.Update(theOne);
-                context.Flush();
+                //context.Flush();
             }
 
             using (var context = new PubsContext()) {
                 var repo = new NHibernateRepository<Job>(context);
                 theOne.Max_lvl--;
                 repo.Save(theOne);
-                context.Flush();
+                //context.Flush();
             }
         }
     }

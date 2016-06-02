@@ -18,6 +18,7 @@ namespace Chuye.Persistent.NHibernate {
         private static Int32 _count = 0;
         private readonly Guid _id = Guid.NewGuid();
         private readonly ISessionFactory _sessionFactory;
+        private readonly NhibernateBehaviourConfigurationSection _nhibernateBehaviour;
         private ISession _session;
         private Boolean _suspendTransaction = false;
 
@@ -39,30 +40,48 @@ namespace Chuye.Persistent.NHibernate {
 
         public NHibernateRepositoryContext(ISessionFactory sessionFactory) {
             _sessionFactory = sessionFactory;
+
+            var configResolver = new ConfigurationResolver();
+            _nhibernateBehaviour = configResolver.Read<NhibernateBehaviourConfigurationSection>("nhibernateBehaviour")
+                ?? new NhibernateBehaviourConfigurationSection {
+                    AlwaysCommit = false
+                };
         }
 
         public void Dispose() {
-            if (_session != null) {
-                try {
-                    Commit();
+            if (_session == null) {
+                return;
+            }
+            try {
+                if (_nhibernateBehaviour.AlwaysCommit) {
+                    if (_session.Transaction.IsActive) {
+                        Commit();
+                    }
+                    else {
+                        Flush();
+                    }
                 }
-                finally {
-                    Debug.WriteLine("(NH:Session dispose, left {0})",
-                        Interlocked.Decrement(ref _count));
-                    _session.Close();
-                    _session.Dispose();
-                    _session = null;
+                else {
+                    Rollback();
                 }
+            }
+            finally {
+                Debug.WriteLine("(NH:Session dispose, left {0})",
+                    Interlocked.Decrement(ref _count));
+                _session.Close();
+                _session.Dispose();
+                _session = null;
             }
         }
 
         public virtual ISession EnsureSession() {
-            if (_session == null) {
-                Debug.WriteLine("(NH:Session open, count {0})",
-                    Interlocked.Increment(ref _count));
-                _session = _sessionFactory.OpenSession();
+            if (_session != null) {
+                return _session;
             }
-            if ( _suspendTransaction && !_session.Transaction.IsActive) {
+            Debug.WriteLine("(NH:Session open, count {0})",
+                Interlocked.Increment(ref _count));
+            _session = _sessionFactory.OpenSession();
+            if (_suspendTransaction && !_session.Transaction.IsActive) {
                 Debug.WriteLine("(NH:Transaction begin)");
                 _session.BeginTransaction();
             }
@@ -89,26 +108,27 @@ namespace Chuye.Persistent.NHibernate {
 
         //仅在事务已创建且处于活动中时提交事务
         public virtual void Commit() {
-            if (_session != null) {
-                try {
-                    if (_session.Transaction.IsActive) {
-                        Debug.WriteLine("(NH:Transaction commit)");
-                        _session.Transaction.Commit();
-                    }
+            if (_session == null) {
+                return;
+            }
+            try {
+                if (_session.Transaction.IsActive) {
+                    Debug.WriteLine("(NH:Transaction commit)");
+                    _session.Transaction.Commit();
                 }
-                catch {
-                    if (_session.Transaction.IsActive) {
-                        Debug.WriteLine("(NH:Transaction rollback)");
-                        _session.Transaction.Rollback();
-                    }
-                    _session.Clear();
-                    throw;
+            }
+            catch {
+                if (_session.Transaction.IsActive) {
+                    Debug.WriteLine("(NH:Transaction rollback)");
+                    _session.Transaction.Rollback();
                 }
-                finally {
-                    if (_session.Transaction.IsActive) {
-                        Debug.WriteLine("(NH:Transaction dispose)");
-                        _session.Transaction.Dispose();
-                    }
+                _session.Clear();
+                throw;
+            }
+            finally {
+                if (_session.Transaction.IsActive) {
+                    Debug.WriteLine("(NH:Transaction dispose)");
+                    _session.Transaction.Dispose();
                 }
             }
         }
