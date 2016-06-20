@@ -32,77 +32,61 @@ namespace Chuye.Persistent.NHibernate {
         }
 
         public override TReutrn Fetch<TReutrn>(Func<IQueryable<TEntry>, TReutrn> query) {
-            return SafeExecute(_ => query(_context.Of<TEntry>()));
-        }
-
-        private void SafeExecute(Action<ISession> action) {
-            try {
-                action(_context.EnsureSession());
-            }
-            catch (GenericADOException ex) {
-                throw ex.InnerException;
-            }
-        }
-
-        private TResult SafeExecute<TResult>(Func<ISession, TResult> func) {
-            try {
-                return func(_context.EnsureSession());
-            }
-            catch (GenericADOException ex) {
-                throw ex.InnerException;
-            }
+            return query(_context.Of<TEntry>());
         }
 
         public override TEntry Retrive(Object id) {
-            return SafeExecute(session => session.Get<TEntry>(id));
+            var session = _context.EnsureSession();
+            return session.Get<TEntry>(id);
         }
 
         public override IEnumerable<TEntry> Retrive(params object[] keys) {
             var metadata = _context.SessionFactory.GetClassMetadata(typeof(TEntry));
-            return SafeExecute(session => {
-                var criteria = session.CreateCriteria<TEntry>();
-                criteria.Add(Restrictions.In(metadata.IdentifierPropertyName, keys));
-                return criteria.List<TEntry>();
-            });
+            var session = _context.EnsureSession();
+            var criteria = session.CreateCriteria<TEntry>();
+            criteria.Add(Restrictions.In(metadata.IdentifierPropertyName, keys));
+            return criteria.List<TEntry>();
         }
 
         //应使用实体属性名而非数据库列名
         public override IEnumerable<TEntry> Retrive<TMember>(String field, params TMember[] keys) {
-            return SafeExecute(session => {
-                var criteria = session.CreateCriteria<TEntry>();
-                criteria.Add(Restrictions.In(field, keys));
-                return criteria.List<TEntry>();
-            });
+            var session = _context.EnsureSession();
+            var criteria = session.CreateCriteria<TEntry>();
+            criteria.Add(Restrictions.In(field, keys));
+            return criteria.List<TEntry>();
         }
 
         public override IEnumerable<TEntry> Retrive<TMember>(Expression<Func<TEntry, TMember>> selector, params TMember[] keys) {
-            return SafeExecute(_ => Retrive(ExpressionBuilder.GetPropertyInfo(selector).Name, keys));
+            return Retrive(ExpressionBuilder.GetPropertyInfo(selector).Name, keys);
         }
 
         public override void Create(TEntry entry) {
-            SafeExecute(session => session.Save(entry));
+            var session = _context.EnsureSession();
+            session.Save(entry);
         }
 
         public override void Update(TEntry entry) {
-            SafeExecute(session => session.Update(entry));
+            var session = _context.EnsureSession();
+            session.Update(entry);
         }
 
         public override void Save(TEntry entry) {
-            SafeExecute(session => session.SaveOrUpdate(entry));
+            var session = _context.EnsureSession();
+            session.SaveOrUpdate(entry);
         }
 
         public override void Delete(TEntry entry) {
-            SafeExecute(session => session.Delete(entry));
+            var session = _context.EnsureSession();
+            session.Delete(entry);
         }
 
         public override bool Any(params Expression<Func<TEntry, bool>>[] predicates) {
-            return SafeExecute(_ => {
-                IQueryable<TEntry> query = All;
-                foreach (var predicate in predicates) {
-                    query = query.Where(predicate);
-                }
-                return query.Select(r => r).FirstOrDefault() != null;
-            });
+            var session = _context.EnsureSession();
+            IQueryable<TEntry> query = All;
+            foreach (var predicate in predicates) {
+                query = query.Where(predicate);
+            }
+            return query.Select(r => r).FirstOrDefault() != null;
         }
     }
 }
