@@ -18,9 +18,9 @@ namespace Chuye.Persistent.NHibernate {
         private static Int32 _count = 0;
         private readonly Guid _id = Guid.NewGuid();
         private readonly ISessionFactory _sessionFactory;
-        private readonly NhibernateBehaviourConfigurationSection _nhibernateBehaviour;
         private ISession _session;
         private Boolean _suspendTransaction = false;
+        private Boolean _alwaysCommit = false;
 
         public Guid ID {
             get { return _id; }
@@ -41,11 +41,9 @@ namespace Chuye.Persistent.NHibernate {
         public NHibernateRepositoryContext(ISessionFactory sessionFactory) {
             _sessionFactory = sessionFactory;
 
-            var configResolver = new ConfigurationResolver();
-            _nhibernateBehaviour = configResolver.Read<NhibernateBehaviourConfigurationSection>("nhibernateBehaviour")
-                ?? new NhibernateBehaviourConfigurationSection {
-                    AlwaysCommit = false
-                };
+            var alwaysCommit = System.Configuration.ConfigurationManager.AppSettings
+                .Get("NHibernate:alwaysCommit");
+            _alwaysCommit = "true".Equals(alwaysCommit, StringComparison.OrdinalIgnoreCase);
         }
 
         public void Dispose() {
@@ -53,7 +51,7 @@ namespace Chuye.Persistent.NHibernate {
                 return;
             }
             try {
-                if (_nhibernateBehaviour.AlwaysCommit) {
+                if (_alwaysCommit) {
                     if (_session.Transaction.IsActive) {
                         Commit();
                     }
