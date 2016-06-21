@@ -13,12 +13,19 @@ namespace Chuye.Persistent.Tests {
 
         public MongoRepositoryTest_() {
             _context = new PubsContext();
+            _context.Database.DropCollection("Roysched");
+            var repo = new MongoRepository<Roysched, String>(_context);
+            repo.Create(new Roysched {
+                Id = "PC8888",
+                Hirange = Hirange
+            });
         }
 
         [Fact]
         public void Retrive_via_primaryKey() {
             var repo = new MongoRepository<Roysched, String>(_context);
             var theFirstOne = repo.Retrive("PC8888");
+            Assert.NotNull(theFirstOne);
         }
 
         [Fact]

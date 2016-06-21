@@ -65,19 +65,19 @@ namespace PersistentDemo.MySql {
                 db.CompleteTransaction();
             }
             stopwatch.Stop();
-            Console.WriteLine("Insert {0}, take {1} sec., {2:f2}/sec.",
+            Console.WriteLine("Dapper insert {0}, take {1} sec., {2:f2}/sec.",
                 count, stopwatch.Elapsed, count / stopwatch.Elapsed.TotalSeconds);
         }
 
         internal static void Insert_with_nhibernate() {
-            var stopwatch = Stopwatch.StartNew();
             const Int32 count = 1000;
+            var stopwatch = Stopwatch.StartNew();
 
             using (var context = new PubsContext()) {
+                stopwatch.Restart(); // delay record
                 context.Begin();
                 var repo = new NHibernateRepository<Person>(context);
                 var maxId = repo.All.Max(x => x.Id);
-                stopwatch.Start();
                 for (int i = 0; i < count; i++) {
                     var person = new Person {
                         Id = ++maxId,
@@ -92,7 +92,7 @@ namespace PersistentDemo.MySql {
                 context.Commit();
             }
             stopwatch.Stop();
-            Console.WriteLine("Insert {0}, take {1} sec., {2:f2}/sec.",
+            Console.WriteLine("Nhibernate insert {0}, take {1} sec., {2:f2}/sec.",
                 count, stopwatch.Elapsed, count / stopwatch.Elapsed.TotalSeconds);
         }
     }
