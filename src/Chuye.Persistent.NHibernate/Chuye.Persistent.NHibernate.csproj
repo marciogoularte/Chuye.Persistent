@@ -49,12 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationResolver.cs" />
     <Compile Include="ExpressionBuilder.cs" />
     <Compile Include="NHibernateInterceptor.cs" />
     <Compile Include="NHibernateRepository.cs" />
     <Compile Include="NHibernateRepositoryContext.cs" />
-    <Compile Include="NhibernateBehaviourConfigurationSection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
