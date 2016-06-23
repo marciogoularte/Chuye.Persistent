@@ -9,11 +9,11 @@ using NHibernate.SqlCommand;
 
 namespace Chuye.Persistent.NHibernate {
     public class NHibernateInterceptor : EmptyInterceptor, IInterceptor {
-        public override SqlString OnPrepareStatement(SqlString sql) {
 #if DEBUG
+        public override SqlString OnPrepareStatement(SqlString sql) {
             Debug.WriteLine(sql);
-#endif
             return base.OnPrepareStatement(sql);
         }
+#endif
     }
 }

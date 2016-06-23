@@ -1,26 +1,48 @@
-## Release log
+ï»¿## Usage
 
-### v2.5.2
+### NHibernate
 
-´Ë°æ±¾Æğ£¬nhibernate.session ½áÊøÊ±ĞĞÎ´Ìá½»µÄ±ä¸üÄ¬ÈÏ½«±»¶ªÆú£¬¿ÉÒÔÍ¨¹ı¿ÉÑ¡µÄÌí¼ÓÅäÖÃÎÄ¼şĞŞ¸Ä´ËĞĞÎª
+* éœ€è¦å®šä¹‰ä¸Šä¸‹æ–‡, ä» NHibernateRepositoryContext æ´¾ç”Ÿå¹¶æä¾› ISessionFactory;
+* éœ€è¦å®šä¹‰å®ä½“ä¸ Mapping, ä½¿ç”¨ xml æˆ–è€… FluentNHibernate ç”¨äºæ„å»º ISessionFactory;
+
+> æ³¨æ„ NHibernate çš„è®¾è®¡ä¸­ ISessionFactory éœ€è¦å•ä¾‹ç»´æŠ¤
+
+#### ç¤ºä¾‹
+
+* [PubsContext](src/PersistentDemo/MySql/PubsContext.cs)
+* [PubsEntites](src/PersistentDemo/MySql/PubsEntites.cs)
+* [PubsMappings](src/PersistentDemo/MySql/PubsMappings.cs)
+
+ISession.Dispose() æ—¶æœªæäº¤å˜ä¾èµ– NHibernate è¡Œä¸ºç­–ç•¥, å¯ä»¥é€šè¿‡é…ç½®ä¿®æ”¹æ­¤è¡Œä¸º;
 
 ```xml
-  <configSections>
-    <section name="nhibernateBehaviour" type="Chuye.Persistent.NHibernate.NhibernateBehaviourConfigurationSection, Chuye.Persistent.NHibernate" />
-  </configSections>
-  <nhibernateBehaviour alwaysCommit="false" />
+  <appSettings>
+    <add key="NHibernate:alwaysCommit" value="true" />
+	...
 ```
 
-* alwaysCommit="false": Ä¬ÈÏĞĞÎª, ËùÓĞÎ´Ìá½»±ä¸ü½«±»¶ªÆú;
-* alwaysCommit="true":  Èç¹ûµ±Ç° session ÔÚÊÂÎñ¹ÜÀíÏÂ½«Ìá½»±ä¸ü; Èç¹ûµ±Ç°²»ÔÚÊÂÎñµÄ¹ÜÀíÏÂÔòÌá½» flush;
+* alwaysCommit: false æˆ–è€…ç¼ºå¤±, å½“å‰ ISession åœ¨äº‹åŠ¡ç®¡ç†ä¸‹åˆ™å›æ»šäº‹åŠ¡, å¦åˆ™éµä» NHibernate ç­–ç•¥;
+* alwaysCommit: true  å½“å‰ ISession åœ¨äº‹åŠ¡ç®¡ç†ä¸‹åˆ™æäº¤äº‹åŠ¡, æ›´å¦åˆ™è°ƒç”¨ ISession.Flush();
 
-### v2.5.1
 
-Retrive(Object[] keys) Óë Retrive<TMember>(String field, params TMember[] keys) ¿ªÊ¼´Ó¾ßÌåÊµÏÖÒıÈë³éÏóÀà Repository<TEntry>;
+### Mongo
 
-* NHibernate ÒÔ ICriteria ÌØĞÔÊµÏÖ;
-* Mongo ÒÔĞ¯´ø Id µÄ IMongoId<TKey> Îª»ù´¡ÊµÏÖ;
+* éœ€è¦å®šä¹‰ä¸Šä¸‹æ–‡, ä» MongoRepositoryContext æ´¾ç”Ÿå¹¶æä¾› connectionString;
+* éœ€è¦å®šä¹‰å®ä½“, ä» IMongoId æˆ– IMongoId<T> å®šä¹‰, å‰è€…é»˜è®¤ä½¿ç”¨ ObjectId ä½œä¸ºä¸»é”®ç±»å‹;
+* å®ä½“ç±»ä¸ documents ç›®å‰æ˜¯ç®€å•æ˜ å°„, å¾…è®¡åˆ’;
 
-### v2.5.0
+#### ç¤ºä¾‹
 
-´ó·ù¼ò»¯ÁË NHibernate Ïà¹ØÊµÏÖ, ÒÆ³ıÁË IAggregate, ½« Id µÄÖ°Ôğ½»»¹ NHibernate µÄ Mapping »úÖÆ;
+* [PubsContext](src/PersistentDemo/Mongo/PubsContext.cs)
+* [PubsEntities](src/PersistentDemo/Mongo/PubsEntities.cs)
+
+
+## Release log
+
+### v2.5
+
+* Nhibernate.Session ç»“æŸæ—¶æœªæäº¤å˜æ›´ä¾èµ– NHibernate è¡Œä¸ºç­–ç•¥ï¼Œå¯ä»¥é€šè¿‡æ·»åŠ é…ç½®ä¿®æ”¹æ­¤è¡Œä¸º;
+* å¤§å¹…ç®€åŒ–äº† NHibernate ç›¸å…³å®ç°, ç§»é™¤äº† IAggregate, å°† Id çš„èŒè´£äº¤è¿˜ NHibernate çš„ Mapping æœºåˆ¶; ç°åœ¨æ³›å‹ Repository åªåœ¨ Mongo å®ç°ä¸­ä¿ç•™;
+* Retrive(Object[] keys) ä¸ Retrive<TMember>(String field, params TMember[] keys) å¼€å§‹ä»å…·ä½“å®ç°å¼•å…¥æŠ½è±¡ç±» Repository<TEntry>;
+  * NHibernate ä»¥ ICriteria ç‰¹æ€§å®ç°;
+  * Mongo ä»¥æºå¸¦ Id çš„ IMongoId<TKey> ä¸ºåŸºç¡€å®ç°;

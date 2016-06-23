@@ -33,9 +33,12 @@ namespace PersistentDemo.MySql {
             var dbConStr = System.Configuration.ConfigurationManager.ConnectionStrings["PubsMysql"].ConnectionString;
             var dbFluentConfig = Fluently.Configure()
                    .Database(MySQLConfiguration.Standard.ConnectionString(dbConStr))
-                   .Mappings(m => m.FluentMappings.AddFromAssemblyOf<PubsContext>());
+                   .Mappings(m => m.FluentMappings.AddFromAssemblyOf<PubsContext>())
+                   .ExposeConfiguration(conf => {
+                       //conf.SetInterceptor(new NHibernateInterceptor());
+                       conf.SetProperty(NHibernate.Cfg.Environment.ShowSql, Boolean.TrueString);
+                   });
             var dbConfig = dbFluentConfig.BuildConfiguration();
-            //dbConfig.SetInterceptor(new NHibernateInterceptor());
 
             ////尝试添加 PostLoadEventListener
             //var listeners = dbConfig.EventListeners.PostLoadEventListeners.ToList();
