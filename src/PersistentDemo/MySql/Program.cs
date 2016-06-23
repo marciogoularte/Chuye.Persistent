@@ -11,12 +11,13 @@ namespace PersistentDemo.MySql {
     class Program {
         internal static void Retrive_via_primaryKey_medium_scale() {
             using (var context = new PubsContext()) {
-                var repo = new NHibernateRepository<Roysched>(context);
-                var allKeys = repo.All.Select(x => x.Title_id).ToArray();
+                context.Begin();
+                var repo = new NHibernateRepository<Job>(context);
+                var allKeys = repo.All.Select(x => x.Job_id).ToArray();
                 Console.WriteLine("Keys.Length={0}", allKeys.Length);
-                var allItems = repo.Retrive(x => x.Title_id, allKeys).ToArray();
+                var allItems = repo.Retrive(x => x.Job_id, allKeys).ToArray();
                 Console.WriteLine("Items.Length={0}", allItems.Length);
-                allItems = repo.All.Where(r => allKeys.Contains(r.Title_id)).ToArray();
+                allItems = repo.All.Where(r => allKeys.Contains(r.Job_id)).ToArray();
                 Console.WriteLine("Items.Length={0}", allItems.Length);
             }
         }
@@ -44,9 +45,8 @@ namespace PersistentDemo.MySql {
             }
         }
 
-        internal static void Insert_with_dapper() {
+        internal static void Insert_with_dapper(Int32 count = 1000) {
             var stopwatch = Stopwatch.StartNew();
-            const Int32 count = 1000;
 
             using (var db = new PetaPoco.Database("PubsMysql")) {
                 db.BeginTransaction();
@@ -69,18 +69,15 @@ namespace PersistentDemo.MySql {
                 count, stopwatch.Elapsed, count / stopwatch.Elapsed.TotalSeconds);
         }
 
-        internal static void Insert_with_nhibernate() {
-            const Int32 count = 1000;
+        internal static void Insert_with_nhibernate(Int32 count = 1000) {
             var stopwatch = Stopwatch.StartNew();
 
             using (var context = new PubsContext()) {
                 stopwatch.Restart(); // delay record
                 context.Begin();
                 var repo = new NHibernateRepository<Person>(context);
-                var maxId = repo.All.Max(x => x.Id);
                 for (int i = 0; i < count; i++) {
                     var person = new Person {
-                        Id = ++maxId,
                         Name = Guid.NewGuid().ToString().Substring(0, 8),
                         Address = Guid.NewGuid().ToString(),
                         Birth = DateTime.Now,
@@ -88,7 +85,6 @@ namespace PersistentDemo.MySql {
                     };
                     repo.Create(person);
                 }
-                //context.Flush();
                 context.Commit();
             }
             stopwatch.Stop();
