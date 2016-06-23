@@ -76,6 +76,7 @@
     <Compile Include="Mongo\PubsEntities.cs" />
     <Compile Include="MySql\Program.cs" />
     <Compile Include="MySql\PubsContext.cs" />
+    <Compile Include="MySql\PubsMappings.cs" />
     <Compile Include="MySql\PubsEntites.cs" />
     <Compile Include="PetaPoco.cs" />
     <Compile Include="Program.cs" />
