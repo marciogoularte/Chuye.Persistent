@@ -9,6 +9,7 @@ namespace Chuye.Persistent {
         void Create(TEntry entry);
         void Update(TEntry entry);
         void Delete(TEntry entry);
+        void Save(TEntry entry);
 
         IQueryable<TResult> All { get; }
         TReutrn Fetch<TReutrn>(Func<IQueryable<TResult>, TReutrn> query);
