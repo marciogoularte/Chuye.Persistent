@@ -5,17 +5,15 @@
 @goto build
 
 :build
-msbuild "%local%src\Chuye.Persistent.sln" /t:Rebuild /P:Configuration=Release
+msbuild "%local%\Chuye.Persistent.sln" /t:Rebuild /P:Configuration=Release
 @goto copy
 
 :copy
-robocopy "%local%src\Chuye.Persistent.Mongo\bin\Release" "%local%release\Chuye.Persistent.Mongo" /mir
 robocopy "%local%src\Chuye.Persistent.NHibernate\bin\Release" "%local%release\Chuye.Persistent.NHibernate" /mir
 @pack end
 
 :pack
 @pushd "%local%"
-.nuget\NuGet.exe pack build\Chuye.Persistent.Mongo.nuspec -Prop Configuration=Release -OutputDirectory release
 .nuget\NuGet.exe pack build\Chuye.Persistent.NHibernate.nuspec -Prop Configuration=Release -OutputDirectory release
 @goto end
 
