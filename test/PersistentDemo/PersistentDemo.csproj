@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{27F0F37A-FB25-4E4D-9C56-9CD5CAA03008}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{FF411F48-DD5E-4891-ADD3-76B9C48C2F2D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chuye.Persistent.Mongo</RootNamespace>
-    <AssemblyName>Chuye.Persistent.Mongo</AssemblyName>
+    <RootNamespace>PersistentDemo</RootNamespace>
+    <AssemblyName>PersistentDemo</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,6 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentNHibernate, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentNHibernate.2.0.3.0\lib\net40\FluentNHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MongoDB.Bson, Version=2.2.4.26, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MongoDB.Bson.2.2.4\lib\net45\MongoDB.Bson.dll</HintPath>
       <Private>True</Private>
@@ -43,7 +53,16 @@
       <HintPath>..\..\packages\MongoDB.Driver.Core.2.2.4\lib\net45\MongoDB.Driver.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,21 +72,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MongoId.cs" />
-    <Compile Include="MongoRepository`.cs" />
-    <Compile Include="MongoRepositoryMapper.cs" />
-    <Compile Include="MongoRepository.cs" />
-    <Compile Include="MongoRepositoryContext.cs" />
+    <Compile Include="Mongo\Program.cs" />
+    <Compile Include="Mongo\PubsContext.cs" />
+    <Compile Include="Mongo\PubsEntities.cs" />
+    <Compile Include="MySql\Program.cs" />
+    <Compile Include="MySql\PubsContext.cs" />
+    <Compile Include="MySql\PubsMappings.cs" />
+    <Compile Include="MySql\PubsEntites.cs" />
+    <Compile Include="PetaPoco.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chuye.Persistent\Chuye.Persistent.csproj">
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Chuye.Persistent.Mongo\Chuye.Persistent.Mongo.csproj">
+      <Project>{27f0f37a-fb25-4e4d-9c56-9cd5caa03008}</Project>
+      <Name>Chuye.Persistent.Mongo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Chuye.Persistent.NHibernate\Chuye.Persistent.NHibernate.csproj">
+      <Project>{2aa2580b-69f5-4537-9ab2-9a426092ae76}</Project>
+      <Name>Chuye.Persistent.NHibernate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Chuye.Persistent\Chuye.Persistent.csproj">
       <Project>{c92a79fa-9d1e-41e0-860a-d6a1b858efc0}</Project>
       <Name>Chuye.Persistent</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Content Include="MySql\Pubs_MySQL.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
