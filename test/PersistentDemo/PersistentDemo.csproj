@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2AA2580B-69F5-4537-9AB2-9A426092AE76}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{FF411F48-DD5E-4891-ADD3-76B9C48C2F2D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chuye.Persistent.NHibernate</RootNamespace>
-    <AssemblyName>Chuye.Persistent.NHibernate</AssemblyName>
+    <RootNamespace>PersistentDemo</RootNamespace>
+    <AssemblyName>PersistentDemo</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,12 +33,36 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentNHibernate, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentNHibernate.2.0.3.0\lib\net40\FluentNHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MongoDB.Bson, Version=2.2.4.26, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MongoDB.Bson.2.2.4\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.2.4.26, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MongoDB.Driver.2.2.4\lib\net45\MongoDB.Driver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.2.4.26, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MongoDB.Driver.Core.2.2.4\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NLog.4.3.9\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -50,23 +76,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpressionBuilder.cs" />
-    <Compile Include="Impl\NHibernateDbContext.cs" />
-    <Compile Include="Impl\NHibernateInterceptor.cs" />
-    <Compile Include="Impl\NHibernateRepository.cs" />
-    <Compile Include="Impl\NHibernateUnitOfWork.cs" />
-    <Compile Include="NHibernateRepository`.cs" />
+    <Compile Include="Mapping\FooBarOwnerMap.cs" />
+    <Compile Include="Mapping\JobAndPersonMap.cs" />
+    <Compile Include="Mapping\NodeMap.cs" />
+    <Compile Include="Mapping\UserAccountMap.cs" />
+    <Compile Include="Model\FooBarOwner.cs" />
+    <Compile Include="Model\JobAndPerson.cs" />
+    <Compile Include="Model\NodeModel.cs" />
+    <Compile Include="Model\UserAccount.cs" />
+    <Compile Include="PetaPoco.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DbContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chuye.Persistent\Chuye.Persistent.csproj">
+    <ProjectReference Include="..\..\src\Chuye.Persistent.NHibernate\Chuye.Persistent.NHibernate.csproj">
+      <Project>{2aa2580b-69f5-4537-9ab2-9a426092ae76}</Project>
+      <Name>Chuye.Persistent.NHibernate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Chuye.Persistent\Chuye.Persistent.csproj">
       <Project>{c92a79fa-9d1e-41e0-860a-d6a1b858efc0}</Project>
       <Name>Chuye.Persistent</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Nlog.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
