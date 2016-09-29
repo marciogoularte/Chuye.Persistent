@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 using NHibernate;
 using NHibernate.SqlCommand;
 
-namespace Chuye.Persistent.NHibernate {
+namespace Chuye.Persistent.NHibernate.Impl {
     public class NHibernateInterceptor : EmptyInterceptor, IInterceptor {
-#if DEBUG
         public override SqlString OnPrepareStatement(SqlString sql) {
             Debug.WriteLine(sql);
             return base.OnPrepareStatement(sql);
         }
-#endif
     }
 }

@@ -61,6 +61,10 @@
       <HintPath>..\..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NLog.4.3.9\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -72,26 +76,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mongo\Program.cs" />
-    <Compile Include="Mongo\PubsContext.cs" />
-    <Compile Include="Mongo\PubsEntities.cs" />
-    <Compile Include="MySql\Program.cs" />
-    <Compile Include="MySql\PubsContext.cs" />
-    <Compile Include="MySql\PubsMappings.cs" />
-    <Compile Include="MySql\PubsEntites.cs" />
+    <Compile Include="Mapping\FooBarOwnerMap.cs" />
+    <Compile Include="Mapping\JobAndPersonMap.cs" />
+    <Compile Include="Mapping\NodeMap.cs" />
+    <Compile Include="Mapping\UserAccountMap.cs" />
+    <Compile Include="Model\FooBarOwner.cs" />
+    <Compile Include="Model\JobAndPerson.cs" />
+    <Compile Include="Model\NodeModel.cs" />
+    <Compile Include="Model\UserAccount.cs" />
     <Compile Include="PetaPoco.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DbContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Chuye.Persistent.Mongo\Chuye.Persistent.Mongo.csproj">
-      <Project>{27f0f37a-fb25-4e4d-9c56-9cd5caa03008}</Project>
-      <Name>Chuye.Persistent.Mongo</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Chuye.Persistent.NHibernate\Chuye.Persistent.NHibernate.csproj">
       <Project>{2aa2580b-69f5-4537-9ab2-9a426092ae76}</Project>
       <Name>Chuye.Persistent.NHibernate</Name>
@@ -102,8 +100,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MySql\Pubs_MySQL.sql" />
+    <None Include="App.config" />
+    <None Include="Nlog.config" />
+    <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

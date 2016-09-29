@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentNHibernate.Mapping;
 
-namespace PersistentDemo.MySql {
+namespace PersistentDemo.Model {
     public class Job {
         public virtual Int16 Job_id { get; set; }
         public virtual String Job_desc { get; set; }
@@ -20,6 +20,7 @@ namespace PersistentDemo.MySql {
         public virtual Int32? Royalty { get; set; }
     }
 
+    [PetaPoco.PrimaryKey("Id", AutoIncrement = false)]
     public class Person {
         public virtual Int32 Id { get; set; }
         public virtual String Name { get; set; }

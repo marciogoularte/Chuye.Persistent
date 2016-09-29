@@ -6,51 +6,55 @@ using System.Text;
 using System.Threading.Tasks;
 using NHibernate;
 using NHibernate.Criterion;
-using NHibernate.Exceptions;
+using NHibernate.Linq;
+using Chuye.Persistent.NHibernate.Impl;
 
 namespace Chuye.Persistent.NHibernate {
     public class NHibernateRepository<TEntry> : Repository<TEntry> where TEntry : class {
-        private readonly NHibernateRepositoryContext _context = null;
+        private readonly NHibernateUnitOfWork _unitOfWork = null;
 
         public override IQueryable<TEntry> All {
             get {
-                return _context.Of<TEntry>();
+                return _unitOfWork.OpenSession().Query<TEntry>();
             }
         }
 
-        public NHibernateRepositoryContext NHibernateRepositoryContext {
-            get { return _context; }
+        public NHibernateUnitOfWork UnitOfWork {
+            get { return _unitOfWork; }
         }
 
-        public NHibernateRepository(IRepositoryContext context)
-            : base(context) {
-            _context = context as NHibernateRepositoryContext;
-            if (_context == null) {
+        public NHibernateRepository(IUnitOfWork unitOfWork)
+            : base(unitOfWork) {
+            _unitOfWork = unitOfWork as NHibernateUnitOfWork;
+            if (_unitOfWork == null) {
                 throw new ArgumentOutOfRangeException("context",
-                    "Expect NHibernateRepositoryContext but provided " + context.GetType().FullName);
+                    "Expect NHibernateUnitOfWork but provided " + unitOfWork.GetType().FullName);
             }
-        }
-
-        public override TReutrn Fetch<TReutrn>(Func<IQueryable<TEntry>, TReutrn> query) {
-            return query(_context.Of<TEntry>());
         }
 
         public override TEntry Retrive(Object id) {
-            var session = _context.EnsureSession();
+            var session = _unitOfWork.OpenSession();
             return session.Get<TEntry>(id);
         }
 
         public override IEnumerable<TEntry> Retrive(params object[] keys) {
-            var metadata = _context.SessionFactory.GetClassMetadata(typeof(TEntry));
-            var session = _context.EnsureSession();
+            var meta = _unitOfWork.Context.SessionFactory.GetClassMetadata(typeof(TEntry));
+            var session = _unitOfWork.OpenSession();
             var criteria = session.CreateCriteria<TEntry>();
-            criteria.Add(Restrictions.In(metadata.IdentifierPropertyName, keys));
+            criteria.Add(Restrictions.In(meta.IdentifierPropertyName, keys));
             return criteria.List<TEntry>();
         }
 
-        //应使用实体属性名而非数据库列名
+        /// <summary>
+        /// NHibernate 会根据 field 获取元数据最终得到数据库中的 column
+        /// 应使用实体属性名而非数据库列名
+        /// </summary>
+        /// <typeparam name="TMember"></typeparam>
+        /// <param name="field"></param>
+        /// <param name="keys"></param>
+        /// <returns></returns>
         public override IEnumerable<TEntry> Retrive<TMember>(String field, params TMember[] keys) {
-            var session = _context.EnsureSession();
+            var session = _unitOfWork.OpenSession();
             var criteria = session.CreateCriteria<TEntry>();
             criteria.Add(Restrictions.In(field, keys));
             return criteria.List<TEntry>();
@@ -61,27 +65,27 @@ namespace Chuye.Persistent.NHibernate {
         }
 
         public override void Create(TEntry entry) {
-            var session = _context.EnsureSession();
+            var session = _unitOfWork.OpenSession();
             session.Save(entry);
         }
 
         public override void Update(TEntry entry) {
-            var session = _context.EnsureSession();
+            var session = _unitOfWork.OpenSession();
             session.Update(entry);
         }
 
         public override void Save(TEntry entry) {
-            var session = _context.EnsureSession();
+            var session = _unitOfWork.OpenSession();
             session.SaveOrUpdate(entry);
         }
 
         public override void Delete(TEntry entry) {
-            var session = _context.EnsureSession();
+            var session = _unitOfWork.OpenSession();
             session.Delete(entry);
         }
 
         public override bool Any(params Expression<Func<TEntry, bool>>[] predicates) {
-            var session = _context.EnsureSession();
+            var session = _unitOfWork.OpenSession();
             IQueryable<TEntry> query = All;
             foreach (var predicate in predicates) {
                 query = query.Where(predicate);

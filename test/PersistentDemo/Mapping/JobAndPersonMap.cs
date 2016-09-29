@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentNHibernate.Mapping;
+using PersistentDemo.Model;
 
-namespace PersistentDemo.MySql {
+namespace PersistentDemo.Mapping {
     public class JobMap : ClassMap<Job> {
         public JobMap() {
             Table("jobs");
@@ -27,7 +28,7 @@ namespace PersistentDemo.MySql {
 
     public class PersonMap : ClassMap<Person> {
         public PersonMap() {
-            Id(x => x.Id)/*.GeneratedBy.Assigned()*/;
+            Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Name);
             Map(x => x.Birth);
             Map(x => x.Address);

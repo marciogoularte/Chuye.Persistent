@@ -12,7 +12,6 @@ namespace Chuye.Persistent {
         void Save(TEntry entry);
 
         IQueryable<TResult> All { get; }
-        TReutrn Fetch<TReutrn>(Func<IQueryable<TResult>, TReutrn> query);
         TResult Retrive(Object id);
         IEnumerable<TResult> Retrive(Object[] keys);
         IEnumerable<TResult> Retrive<TKey>(String field, params TKey[] keys);
