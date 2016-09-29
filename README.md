@@ -50,14 +50,13 @@ install-package Chuye.Persistent
 
         }
     }
-
 ```
 
 4. Enjoy youself  
 
 DbContext should be maintenance as singleton, dependency injection with autofac
 
-```
+```c
     ContainerBuilder builder = ...
     builder.RegisterType<DbContext>().As<NHibernateDbContext>().SingleInstance();
 ```
@@ -84,16 +83,14 @@ DbContext should be maintenance as singleton, dependency injection with autofac
             uow.Commit(); 
             // Save you change using uow.Flush() without transaction
         }
-4.2 Repository usage
-
 ```
-    ...
+
+4.2 Repository usage  
+```
     builder.RegisterGeneric(typeof(NHibernateRepository<>)).As(typeof(IRepository<>));
 ```
 
-
-
 ## Release log
 
-[RELEASE_NOTES](RELEASE_NOTES.md)
+[RELEASE_NOTES](/blob/master/RELEASE_NOTES.md)
 
