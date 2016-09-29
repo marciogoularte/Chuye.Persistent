@@ -55,7 +55,7 @@
     <Compile Include="Impl\NHibernateInterceptor.cs" />
     <Compile Include="Impl\NHibernateRepository.cs" />
     <Compile Include="Impl\NHibernateUnitOfWork.cs" />
-    <Compile Include="NHibernateRepository.cs" />
+    <Compile Include="NHibernateRepository`.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

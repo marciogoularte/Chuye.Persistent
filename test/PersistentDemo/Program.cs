@@ -99,7 +99,6 @@ namespace PersistentDemo {
 
         //从属账户思路?
         private static void ParentChildTest() {
-            //LogManager.Configuration.AllTargets[0].
             Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
             using (var context = new DbContext())
             using (var uow = new NHibernateUnitOfWork(context)) {

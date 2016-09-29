@@ -7,8 +7,8 @@ using FluentNHibernate.Mapping;
 using PersistentDemo.Model;
 
 namespace PersistentDemo.Mapping {
-    class ParentMap : ClassMap<Node> {
-        public ParentMap() {
+    class NodeMap : ClassMap<Node> {
+        public NodeMap() {
             Id(x => x.Id);
             Map(x => x.Name);
             References(x => x.Parent, "ParentId")
