@@ -11,7 +11,7 @@ namespace Chuye.Persistent.NHibernate.Impl {
 
         public NHibernateRepository(IUnitOfWork context) {
             if (!(context is NHibernateUnitOfWork)) {
-                throw new ArgumentOutOfRangeException(nameof(context));
+                throw new ArgumentOutOfRangeException("context");
             }
             Context = (NHibernateUnitOfWork)context;
         }
