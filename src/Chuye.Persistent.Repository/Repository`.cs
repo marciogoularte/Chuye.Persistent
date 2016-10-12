@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chuye.Persistent {
+namespace Chuye.Persistent.Repository {
     public abstract class Repository<TEntry> : IRepository<TEntry> {
         private readonly IUnitOfWork _unitOfWork;
         public Repository(IUnitOfWork unitOfWork) {

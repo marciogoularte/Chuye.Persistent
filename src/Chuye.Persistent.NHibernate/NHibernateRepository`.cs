@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
-using Chuye.Persistent.NHibernate.Impl;
+using Chuye.Persistent.Repository;
 
 namespace Chuye.Persistent.NHibernate {
     public class NHibernateRepository<TEntry> : Repository<TEntry> where TEntry : class {

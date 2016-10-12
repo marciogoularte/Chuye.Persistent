@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chuye.Persistent {
+namespace Chuye.Persistent.Repository {
     public interface IRepository<in TEntry, out TResult> {
         void Create(TEntry entry);
         void Update(TEntry entry);
