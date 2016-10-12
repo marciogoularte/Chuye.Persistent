@@ -48,7 +48,7 @@ namespace Chuye.Persistent.NHibernate {
                 Debug.WriteLine("(NH:Transaction begin)");
                 _session.BeginTransaction();
             }
-            return new SessionKeeper(this);
+            return new TransactionKeeper(this);
         }
 
         //仅在事务已创建且处于活动中时回滚事务
@@ -129,9 +129,9 @@ namespace Chuye.Persistent.NHibernate {
             }
         }
 
-        internal class SessionKeeper : IDisposable {
+        internal class TransactionKeeper : IDisposable {
             private readonly NHibernateUnitOfWork _unitOfWork;
-            public SessionKeeper(NHibernateUnitOfWork unitOfWork) {
+            public TransactionKeeper(NHibernateUnitOfWork unitOfWork) {
                 _unitOfWork = unitOfWork;
             }
 

@@ -9,22 +9,73 @@ using NHibernate.Linq;
 using NLog;
 using Chuye.Persistent.NHibernate;
 using PersistentDemo.Model;
+using Chuye.Persistent.PetaPoco;
+using System.Data.Common;
 
 namespace PersistentDemo {
     class Program {
         static ILogger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args) {
-            ReferenceMapNoUsingTest();
-            ReferenceMapTest();
-            ReferenceAsIdTest();
-            ParentChildTest();
+            //ReferenceMapNoUsingTest();
+            //ReferenceMapTest();
+            //ReferenceAsIdTest();
+            //ParentChildTest();
 
-            Save_entity_new_and_exists();
-            Retrive_via_primaryKey_medium_scale();
+            //Save_entity_new_and_exists();
+            //Retrive_via_primaryKey_medium_scale();
 
             //'NHibernate.Cfg.Environment.ShowSql' should set to false 
             //Insert_with_nhibernate();
             //Insert_with_petapoco();
+
+            Test();
+        }
+
+        static void Test() {
+            var ctx = new PetaPocoDbContext("test");
+            var uow = new PetaPocoUnitOfWork(ctx);
+            var person = new Person {
+                Name = "Mike",
+                Address = Guid.NewGuid().ToString(),
+                Birth = DateTime.Now,
+                Job_id = Math.Abs(Guid.NewGuid().GetHashCode() % 100)
+            };
+            //uow.Database.Insert(person);
+
+
+            Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
+
+            #region 1.1 no transaction, call Rollback()
+            uow.Begin();
+            uow.Database.Execute("update person set job_id = job_id + 1");
+            uow.Rollback();
+            #endregion
+
+            #region 1.2 no transaction, call Dispose()
+            uow.Begin();
+            uow.Database.Execute("update person set job_id = job_id + 1");
+            uow.Dispose();
+            #endregion
+
+
+            #region 2.1 no transaction
+            //uow.Database.Execute("update person set job_id = job_id + 1");
+            //uow.Database.Execute("update person set name = 'too longggggggggggggg'");
+            #endregion
+
+            #region 2.2 Error without Comment() or Dispose() for Begin() without using
+            //uow.Begin();
+            //uow.Database.Execute("update person set job_id = job_id + 1");
+            //uow.Database.Execute("update person set name = 'too longggggggggggggg'");
+            //uow.Dispose();
+            #endregion
+
+            #region 2.3 Error with Dispose() for Begin() with using
+            using (uow.Begin()) {
+                uow.Database.Execute("update person set job_id = job_id + 1");
+                uow.Database.Execute("update person set name = 'too longggggggggggggg'");
+            }
+            #endregion
         }
 
         /* 事务控制, 非事务行为, benchmark

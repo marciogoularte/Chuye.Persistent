@@ -560,8 +560,8 @@ namespace PetaPoco
         /// <returns>True to re-throw the exception, false to suppress it</returns>
         public virtual bool OnException(Exception x)
         {
-            System.Diagnostics.Debug.WriteLine(x.ToString());
-            System.Diagnostics.Debug.WriteLine(LastCommand);
+            //System.Diagnostics.Debug.WriteLine(x.ToString());
+            //System.Diagnostics.Debug.WriteLine(LastCommand);
             return true;
         }
 
