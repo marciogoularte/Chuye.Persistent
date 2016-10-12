@@ -2,7 +2,7 @@
 using NHibernate;
 using NHibernate.Cfg;
 
-namespace Chuye.Persistent.NHibernate.Impl {
+namespace Chuye.Persistent.NHibernate {
     public abstract class NHibernateDbContext : IDisposable {
         private readonly Guid _id;
         private Boolean _alwaysCommit;

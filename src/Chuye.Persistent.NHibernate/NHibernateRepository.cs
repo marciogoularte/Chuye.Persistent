@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Chuye.Persistent;
 
-namespace Chuye.Persistent.NHibernate.Impl {
+namespace Chuye.Persistent.NHibernate {
     public class NHibernateRepository {
         protected NHibernateUnitOfWork Context { get; private set; }
 

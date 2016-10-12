@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NHibernate;
 
-namespace Chuye.Persistent.NHibernate.Impl {
+namespace Chuye.Persistent.NHibernate {
     public class NHibernateUnitOfWork : IUnitOfWork {
         private static Int32 _count = 0;
         private readonly Guid _id = Guid.NewGuid();

@@ -8,7 +8,6 @@ using NHibernate.Criterion;
 using NHibernate.Linq;
 using NLog;
 using Chuye.Persistent.NHibernate;
-using Chuye.Persistent.NHibernate.Impl;
 using PersistentDemo.Model;
 
 namespace PersistentDemo {
@@ -272,7 +271,7 @@ namespace PersistentDemo {
         #endregion
 
         #region benchmark
-        private static void Insert_with_petapoco(Int32 count = 1000) {
+        /*private static void Insert_with_petapoco(Int32 count = 1000) {
             var stopwatch = Stopwatch.StartNew();
 
             using (var db = new PetaPoco.Database("test")) {
@@ -294,7 +293,7 @@ namespace PersistentDemo {
             stopwatch.Stop();
             Console.WriteLine("PetaPoco insert {0}, take {1} sec., {2:f2}/sec.",
                 count, stopwatch.Elapsed, count / stopwatch.Elapsed.TotalSeconds);
-        }
+        }*/
 
         private static void Insert_with_nhibernate(Int32 count = 1000) {
             var stopwatch = Stopwatch.StartNew();

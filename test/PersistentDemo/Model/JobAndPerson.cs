@@ -20,7 +20,7 @@ namespace PersistentDemo.Model {
         public virtual Int32? Royalty { get; set; }
     }
 
-    [PetaPoco.PrimaryKey("Id", AutoIncrement = false)]
+    //[PetaPoco.PrimaryKey("Id", AutoIncrement = false)]
     public class Person {
         public virtual Int32 Id { get; set; }
         public virtual String Name { get; set; }
