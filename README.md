@@ -1,13 +1,57 @@
 ﻿## Usage
+### Chuye.Persistent.PetaPoco
 
 1. Add dependency using nuget  
+
 ```bash
-install-package FluentNHibernate
-install-package Chuye.Persistent
+    install-package Chuye.Persistent.PetaPoco
 ```
 
+2. Add poco，several attributes provided for table, primaryKey customization  
+
+```c
+    [PetaPoco.PrimaryKey("Id", AutoIncrement = true)]
+    public class Person {
+        public virtual Int32 Id { get; set; }
+        public virtual String Name { get; set; }
+        public virtual DateTime Birth { get; set; }
+        public virtual String Address { get; set; }
+        public virtual Int32 Job_id { get; set; }
+    }
+```
+
+3. PetaPocoUnitOfWork associated with PetaPoco.Database instance implemented IUnitOfWork interface, should maintained as build-in life cycleined inline or PerHttpRequest with dependency injection tool. PetaPocoDbContext is a optional lightweight object holding the connection information. All operations should be organised around the PetaPoco.Databas instance, which can be obtained from the PetaPocoDbContext.Database, is a extended implements, intercepting exception for transaction management.
+
+```c
+    //transaction usage
+    using (uow.Begin()) {
+        uow.Database.Execute("update person set job_id = job_id + 1");
+        uow.Database.Execute("update person set name = 'too longggggggggggggg'"); //Data too long for column 'Name' at row 1
+
+        //Commit if no error, or roll back
+    }    
+
+    //page uage
+
+```
+
+> Diagnostic message
+
+```c
+Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
+```
+
+### Chuye.Persistent.NHibernate
+
+1. Add dependency using nuget  
+
+```bash
+    install-package FluentNHibernate
+    install-package Chuye.Persistent.NHibernate
+```
 
 2. Add mapping and poco  
+
 ```c
     class Node {
         public virtual int Id { get; set; }
@@ -26,6 +70,7 @@ install-package Chuye.Persistent
 ```
 
 3. Define your DbContext  
+
 ```c
     public class DbContext : NHibernateDbContext {
         private String _connectionString;
@@ -50,20 +95,18 @@ install-package Chuye.Persistent
 
         }
     }
-
 ```
 
-4. Enjoy youself  
+4. DbContext should be maintenance as singleton, dependency injection with autofac, Enjoy youself  
 
-DbContext should be maintenance as singleton, dependency injection with autofac
-
-```
+```c
     ContainerBuilder builder = ...
     builder.RegisterType<DbContext>().As<NHibernateDbContext>().SingleInstance();
 ```
 
 
-4.1 Low-level api using NHibernate ISession
+> Low-level api using NHibernate ISession
+
 ```c
         using (var context = new DbContext())
         using (var uow = new NHibernateUnitOfWork(context)) {           
@@ -84,16 +127,15 @@ DbContext should be maintenance as singleton, dependency injection with autofac
             uow.Commit(); 
             // Save you change using uow.Flush() without transaction
         }
-4.2 Repository usage
+```
+
+> Optional repository usage
 
 ```
-    ...
     builder.RegisterGeneric(typeof(NHibernateRepository<>)).As(typeof(IRepository<>));
 ```
 
-
-
 ## Release log
 
-[RELEASE_NOTES](RELEASE_NOTES.md)
+[RELEASE_NOTES](/blob/master/RELEASE_NOTES.md)
 
