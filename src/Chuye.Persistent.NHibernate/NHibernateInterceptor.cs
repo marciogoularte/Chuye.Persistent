@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using NHibernate;
 using NHibernate.SqlCommand;
 
-namespace Chuye.Persistent.NHibernate.Impl {
+namespace Chuye.Persistent.NHibernate {
     public class NHibernateInterceptor : EmptyInterceptor, IInterceptor {
         public override SqlString OnPrepareStatement(SqlString sql) {
             Debug.WriteLine(sql);

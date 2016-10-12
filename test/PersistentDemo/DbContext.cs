@@ -4,7 +4,7 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate.Tool.hbm2ddl;
 using Chuye.Persistent;
-using Chuye.Persistent.NHibernate.Impl;
+using Chuye.Persistent.NHibernate;
 
 namespace PersistentDemo {
     public class DbContext : NHibernateDbContext {

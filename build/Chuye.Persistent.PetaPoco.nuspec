@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Chuye.Persistent.PetaPoco</id>
+    <version>2.6.1</version>
+    <title>Chuye.Persistent.PetaPoco</title>
+    <authors>jusfr</authors>
+    <owners>jusfr</owners>
+    <licenseUrl>http://https://github.com/jusfr/Chuye.Persistent/blob/release/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/jusfr/Chuye.Persistent</projectUrl>
+    <iconUrl>http://static01.cloud7.com.cn/assets/7a63d1b9/content/image/chuye-site/logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>UnitOfWork implement for RDBS using PetaPoco</description>
+    <releaseNotes>This is a initial release.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Chuye Persistent PetaPoco</tags>
+    <dependencies /> 
+  </metadata>
+  <files>
+    <file src="..\release\Chuye.Persistent.PetaPoco\Chuye.Persistent.dll" target="lib\net452" />
+    <file src="..\release\Chuye.Persistent.PetaPoco\Chuye.Persistent.PetaPoco.dll" target="lib\net452" />
+  </files>
+</package>
