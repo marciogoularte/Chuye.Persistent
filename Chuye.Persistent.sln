@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent.PetaPoco",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent.Repository", "src\Chuye.Persistent.Repository\Chuye.Persistent.Repository.csproj", "{C16886A6-4BD1-44B5-9D88-1DF825DBA639}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent.Dapper", "src\Chuye.Persistent.Dapper\Chuye.Persistent.Dapper.csproj", "{08482B5D-A549-476E-ACCC-A9BDCB9EFAC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{C16886A6-4BD1-44B5-9D88-1DF825DBA639}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C16886A6-4BD1-44B5-9D88-1DF825DBA639}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C16886A6-4BD1-44B5-9D88-1DF825DBA639}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08482B5D-A549-476E-ACCC-A9BDCB9EFAC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08482B5D-A549-476E-ACCC-A9BDCB9EFAC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08482B5D-A549-476E-ACCC-A9BDCB9EFAC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08482B5D-A549-476E-ACCC-A9BDCB9EFAC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,5 +59,6 @@ Global
 		{FF411F48-DD5E-4891-ADD3-76B9C48C2F2D} = {50B84AC1-5389-43AD-BB18-EA4C8BF22EA2}
 		{27693F25-7D01-4551-ADE5-CB29A8423B2F} = {F0E1C640-3BC1-4663-B513-FE2747AA9246}
 		{C16886A6-4BD1-44B5-9D88-1DF825DBA639} = {F0E1C640-3BC1-4663-B513-FE2747AA9246}
+		{08482B5D-A549-476E-ACCC-A9BDCB9EFAC4} = {F0E1C640-3BC1-4663-B513-FE2747AA9246}
 	EndGlobalSection
 EndGlobal
