@@ -23,22 +23,30 @@
 3. PetaPocoUnitOfWork associated with PetaPoco.Database instance implemented IUnitOfWork interface, should maintained as build-in life cycleined inline or PerHttpRequest with dependency injection tool. PetaPocoDbContext is a optional lightweight object holding the connection information. All operations should be organised around the PetaPoco.Databas instance, which can be obtained from the PetaPocoDbContext.Database, is a extended implements, intercepting exception for transaction management.
 
 ```c
-    //transaction usage
+    //work with PetaPoco.Database
+    var uow = new PetaPocoUnitOfWork("connectionStringName");
+    var list = uow.Database.Fetch<Person>("select * from person limit 10");
+
+    //transaction behaviour with using, commit if no error, or roll back
     using (uow.Begin()) {
         uow.Database.Execute("update person set job_id = job_id + 1");
         uow.Database.Execute("update person set name = 'too longggggggggggggg'"); //Data too long for column 'Name' at row 1
-
-        //Commit if no error, or roll back
     }    
 
-    //page uage
-
+    //paging sample
+    Object lastId = 0;
+    //sql must use inequality-equation and limit
+    var sql = "select * from person where id > @0 order by id asc limit 100"; 
+    var page = uow.Database.DeferPage<Person>(sql, x => x.Max(z => z.Id));
+    while (page.Next(ref lastId)) {
+        //do stuff with page.Items
+    }
 ```
 
 > Diagnostic message
 
 ```c
-Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
+    Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
 ```
 
 ### Chuye.Persistent.NHibernate
@@ -108,28 +116,28 @@ Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
 > Low-level api using NHibernate ISession
 
 ```c
-        using (var context = new DbContext())
-        using (var uow = new NHibernateUnitOfWork(context)) {           
-            uow.Begin(); // using(uow.Begin()) is good choice
-            var session = uow.OpenSession();
-            var parent = new Node {
-                Name = "Parent",
-            };
-            session.Save(parent);
-            uow.Commit();
+    using (var context = new DbContext())
+    using (var uow = new NHibernateUnitOfWork(context)) {           
+        uow.Begin(); // using(uow.Begin()) is good choice
+        var session = uow.OpenSession();
+        var parent = new Node {
+            Name = "Parent",
+        };
+        session.Save(parent);
+        uow.Commit();
 
-            var child = new Node {
-                Name = "Child",
-                Parent = parent,
-            };
-            session.Save(child);
-            // Commit it, or lose your change
-            uow.Commit(); 
-            // Save you change using uow.Flush() without transaction
-        }
+        var child = new Node {
+            Name = "Child",
+            Parent = parent,
+        };
+        session.Save(child);
+        // Commit it, or lose your change
+        uow.Commit(); 
+        // Save you change using uow.Flush() without transaction
+    }
 ```
 
-> Optional repository usage
+> Optional repository usage, sample of Autofac
 
 ```
     builder.RegisterGeneric(typeof(NHibernateRepository<>)).As(typeof(IRepository<>));

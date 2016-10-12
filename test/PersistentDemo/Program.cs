@@ -16,6 +16,7 @@ namespace PersistentDemo {
     class Program {
         static ILogger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args) {
+
             //ReferenceMapNoUsingTest();
             //ReferenceMapTest();
             //ReferenceAsIdTest();
