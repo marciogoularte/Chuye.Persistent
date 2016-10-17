@@ -29,5 +29,9 @@ namespace Chuye.Persistent.PetaPoco {
         public Sql ToSql(Object lastId) {
             return new Sql(SqlString, lastId);
         }
+
+        public static implicit operator PagedSql(String sql) {
+            return new PagedSql(sql);
+        }
     }
 }

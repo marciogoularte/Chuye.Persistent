@@ -8,16 +8,13 @@ using PetaPoco;
 
 namespace Chuye.Persistent.PetaPoco {
     public static class DatabaseExtension {
-        public static DeferredPage<T> DeferPage<T>(this IDatabase db, String sql, Func<IList<T>, Object> lastIdFunc) {
-            return DeferPage<T>(db, new PagedSql(sql), lastIdFunc);
+
+        public static DeferredPage<T> DeferPage<T>(this IDatabase db, String pageSql, Func<IList<T>, Object> lastIdFunc) {
+            return new DeferredPage<T>(db, new PagedSql(pageSql), lastIdFunc);
         }
 
-        public static DeferredPage<T> DeferPage<T>(this IDatabase db, Sql sql, Func<IList<T>, Object> lastIdFunc) {
-            return DeferPage<T>(db, new PagedSql(sql), lastIdFunc);
-        }
-
-        internal static DeferredPage<T> DeferPage<T>(this IDatabase db, PagedSql pagedSql, Func<IList<T>, Object> lastIdFunc) {
-            return new DeferredPage<T>(db, pagedSql, lastIdFunc);
+        public static DeferredPage<T> DeferPage<T>(this IDatabase db, Sql pageSql, Func<IList<T>, Object> lastIdFunc) {
+            return new DeferredPage<T>(db, new PagedSql(pageSql), lastIdFunc);
         }
     }
 }
