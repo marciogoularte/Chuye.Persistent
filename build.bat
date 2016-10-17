@@ -9,11 +9,13 @@ msbuild "%local%\Chuye.Persistent.sln" /t:Rebuild /P:Configuration=Release
 @goto copy
 
 :copy
+robocopy "%local%src\Chuye.Persistent.PetaPoco\bin\Release" "%local%release\Chuye.Persistent.PetaPoco" /mir
 robocopy "%local%src\Chuye.Persistent.NHibernate\bin\Release" "%local%release\Chuye.Persistent.NHibernate" /mir
-@pack end
+@goto pack
 
 :pack
 @pushd "%local%"
+.nuget\NuGet.exe pack build\Chuye.Persistent.PetaPoco.nuspec -Prop Configuration=Release -OutputDirectory release
 .nuget\NuGet.exe pack build\Chuye.Persistent.NHibernate.nuspec -Prop Configuration=Release -OutputDirectory release
 @goto end
 

@@ -1,7 +1,9 @@
-﻿### 2.6
+﻿
+### 2.6
 
-* 移除了 MongoDb 相关的实现
-* 将 UnitOfWork 职责从 NHibernateDbContext 剥离到 NHibernateUnitOfWork 作为更轻更核心的实现，现有 Repository 实现只是可选
+* 移除了 MongoDb 相关的实现, 将 Repository 作为可选实现;
+* 将 UnitOfWork 职责从 NHibernateDbContext 剥离到 NHibernateUnitOfWork 作为更轻更核心的实现;
+* 添加基于 PetaPoco 的 UnitOfWork 实现
 
 ### v2.5
 
