@@ -8,22 +8,26 @@ using PetaPoco;
 
 namespace Chuye.Persistent.PetaPoco {
     internal class PagedSql {
-        private const String PagePt = @"limit\s+\d+";
-        public String Sql { get; private set; }
+        private const String PagePt = @"WHERE\s+(?<w>.+)\s+ORDER\s+BY\s+(?<o>.+?)\s+(?:(?:ASC)|(?:DESC)\s+)?LIMIT\s+(?<l>\d+(?:,\d+)?)";
+        public String SqlString { get; private set; }
 
-        public PagedSql(Sql sql) {
-            Sql = sql.SQL;
+        public PagedSql(Sql sql)
+            : this(sql.SQL) {
         }
 
         public PagedSql(String sql) {
-            if (!Regex.IsMatch(sql, PagePt)) {
-                throw new ArgumentOutOfRangeException("limit", "Sql limit missing");
+            if (String.IsNullOrWhiteSpace(sql)) {
+                throw new ArgumentOutOfRangeException("sql", "Sql null or empty");
             }
-            Sql = sql;
+            var match = Regex.Match(sql, PagePt, RegexOptions.IgnoreCase);
+            if (!match.Success) {
+                throw new ArgumentOutOfRangeException("sql", "Regex match failed, 'where' or 'limit', 'order by' clause may missing");
+            }
+            SqlString = sql;
         }
 
         public Sql ToSql(Object lastId) {
-            return new Sql(Sql, lastId);
+            return new Sql(SqlString, lastId);
         }
     }
 }
