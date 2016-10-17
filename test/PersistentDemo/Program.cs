@@ -16,6 +16,7 @@ namespace PersistentDemo {
     class Program {
         static ILogger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args) {
+
             //ReferenceMapNoUsingTest();
             //ReferenceMapTest();
             //ReferenceAsIdTest();
@@ -28,10 +29,10 @@ namespace PersistentDemo {
             //Insert_with_nhibernate();
             //Insert_with_petapoco();
 
-            Test();
+            PetaPocoDbContextTest();
         }
 
-        static void Test() {
+        static void PetaPocoDbContextTest() {
             var ctx = new PetaPocoDbContext("test");
             var uow = new PetaPocoUnitOfWork(ctx);
             var person = new Person {
@@ -41,7 +42,6 @@ namespace PersistentDemo {
                 Job_id = Math.Abs(Guid.NewGuid().GetHashCode() % 100)
             };
             //uow.Database.Insert(person);
-
 
             Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
 

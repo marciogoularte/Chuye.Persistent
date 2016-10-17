@@ -8,7 +8,6 @@ using PetaPoco;
 
 namespace Chuye.Persistent.PetaPoco {
     public static class DatabaseExtension {
-
         public static DeferredPage<T> DeferPage<T>(this IDatabase db, String sql, Func<IList<T>, Object> lastIdFunc) {
             return DeferPage<T>(db, new PagedSql(sql), lastIdFunc);
         }
