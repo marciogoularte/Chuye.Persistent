@@ -4,8 +4,31 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentNHibernate.Mapping;
 
-namespace PersistentDemo.Model {
+namespace PersistentDemo.Models {
+    //class UserMap : ClassMap<User> {
+    //    public UserMap() {
+    //        Id(x => x.Id).GeneratedBy.Assigned();
+    //        Map(x => x.Name);
+    //    }
+    //}
+
+    //class AccountMap : ClassMap<Account> {
+    //    public AccountMap() {
+    //        CompositeId().KeyReference(x => x.User, "Id");
+    //        Map(x => x.Balance);
+    //    }
+    //}
+
+    //class DrivingLicenseMap : ClassMap<DrivingLicense> {
+    //    public DrivingLicenseMap() {
+    //        Id(x => x.Id).GeneratedBy.Foreign("User");
+    //        HasOne(x => x.User).Constrained().ForeignKey();
+    //        Map(x => x.CreateAt);
+    //    }
+    //}
+
     class User {
         public virtual Int32 Id { get; set; }
         public virtual String Name { get; set; }

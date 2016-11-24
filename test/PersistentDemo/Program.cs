@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NHibernate.Criterion;
-using NHibernate.Linq;
-using NLog;
 using Chuye.Persistent.NHibernate;
-using PersistentDemo.Model;
 using Chuye.Persistent.PetaPoco;
-using System.Data.Common;
+using NHibernate.Criterion;
+using NLog;
+using PersistentDemo.Models;
 
 namespace PersistentDemo {
     class Program {
@@ -18,7 +13,7 @@ namespace PersistentDemo {
         static void Main(string[] args) {
 
             //ReferenceMapNoUsingTest();
-            //ReferenceMapTest();
+            ReferenceMapSaveTest();
             //ReferenceAsIdTest();
             //ParentChildTest();
 
@@ -29,7 +24,7 @@ namespace PersistentDemo {
             //Insert_with_nhibernate();
             //Insert_with_petapoco();
 
-            PetaPocoDbContextTest();
+            //PetaPocoDbContextTest();
         }
 
         static void PetaPocoDbContextTest() {
@@ -204,77 +199,39 @@ namespace PersistentDemo {
             }
         }
 
-        private static void ReferenceMapTest() {
+        private static void ReferenceMapSaveTest() {
             var context = new DbContext();
-
             using (var uow = new NHibernateUnitOfWork(context))
             using (uow.Begin()) {
                 var session = uow.OpenSession();
-                var owner = new Owner {
-                    Id = 1,
-                };
-                session.Save(owner);
-
-                var foo = new FooItem() {
+                var drawer = new Drawer {
                     Id = 2,
-                    Title = "title",
-                    Owner = owner,
+                    Name = "name"
                 };
-                var bar = new BarItem() {
+                var desktop = new Desktop() {
                     Id = 3,
-                    Remark = "remark",
-                    Owner = owner,
+                    Title = "title",
                 };
-
-                owner.FooItem = foo;
-                owner.BarItem = bar;
-                session.Save(owner);
+                drawer.Desktop = desktop;
+                desktop.Drawers.Add(drawer);
+                session.Save(desktop);
             }
 
-            //using (var uow = new NHibernateUnitOfWork(context))
-            //using (uow.Begin()) {
-            //    var session = uow.OpenSession();
-            //    var query = session.Query<FooItem>().Where(x => x.Id < 0).Sum(x => (int?)x.Id) ?? 0;
-            //}
-        }
-
-        private static void ReferenceMapNoUsingTest() {
-            var context = new DbContext();
-
-            using (var uow = new NHibernateUnitOfWork(context)) {
-                uow.Begin();
+            Console.WriteLine();
+            Console.WriteLine("ISession.Get<Desktop>(3)");
+            using (var uow = new NHibernateUnitOfWork(context))
+            using (uow.Begin()) {
                 var session = uow.OpenSession();
-                var owner = new Owner {
-                    Id = 1,
-                };
-                session.Save(owner);
-
-                var foo = new FooItem() {
-                    Id = 2,
-                    Title = "title",
-                    Owner = owner,
-                };
-                var bar = new BarItem() {
-                    Id = 3,
-                    Remark = "remark",
-                    Owner = owner,
-                };
-
-                owner.FooItem = foo;
-                owner.BarItem = bar;
-                session.Save(owner);
-
-                //uow.Flush(); // 在事务控制中，flush 不能保证变更被保存；
-                //uow.Commit();
-                //1. NHibernate:alwaysCommit=false，不显式调用 commit, 无论是否 flush，变更都被回滚；
-                //2. NHibernate:alwaysCommit=true，commit 将在 dispose 时被动调用
+                var desktop = session.Get<Desktop>(3);
             }
 
-            //using (var uow = new NHibernateUnitOfWork(context))
-            //using (uow.Begin()) {
-            //    var session = uow.OpenSession();
-            //    var query = session.Query<FooItem>().Where(x => x.Id < 0).Sum(x => (int?)x.Id) ?? 0;
-            //}
+            Console.WriteLine();
+            Console.WriteLine("ISession.Get<Drawer>(2)");
+            using (var uow = new NHibernateUnitOfWork(context))
+            using (uow.Begin()) {
+                var session = uow.OpenSession();
+                var desktop = session.Get<Drawer>(2);
+            }
         }
 
         #endregion

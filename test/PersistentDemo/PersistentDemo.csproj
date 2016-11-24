@@ -64,14 +64,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mapping\FooBarOwnerMap.cs" />
-    <Compile Include="Mapping\JobAndPersonMap.cs" />
-    <Compile Include="Mapping\NodeMap.cs" />
-    <Compile Include="Mapping\UserAccountMap.cs" />
-    <Compile Include="Model\FooBarOwner.cs" />
-    <Compile Include="Model\JobAndPerson.cs" />
-    <Compile Include="Model\NodeModel.cs" />
-    <Compile Include="Model\UserAccount.cs" />
+    <Compile Include="Model\Drawer-Desktop.cs" />
+    <Compile Include="Model\Job-Roysched-Person.cs" />
+    <Compile Include="Model\Node.cs" />
+    <Compile Include="Model\User-Account-DrivingLicense.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DbContext.cs" />
