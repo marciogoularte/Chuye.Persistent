@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Book-Cover.cs" />
     <Compile Include="Models\Drawer-Desktop.cs" />
     <Compile Include="Models\Job-Roysched-Person.cs" />
     <Compile Include="Models\Node.cs" />

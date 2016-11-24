@@ -28,7 +28,7 @@ namespace PersistentDemo {
                    .ExposeConfiguration(conf => {
 #if DEBUG
                        if (Boolean.TrueString.Equals(ConfigurationManager.AppSettings.Get("NHibernate:recreate"), StringComparison.OrdinalIgnoreCase)) {
-                           new SchemaExport(conf).Create(false, true);
+                           new SchemaExport(conf).Create(true, true);
                        }
 #endif
                    })

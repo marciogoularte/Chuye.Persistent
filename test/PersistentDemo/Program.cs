@@ -4,6 +4,7 @@ using System.Linq;
 using Chuye.Persistent.NHibernate;
 using Chuye.Persistent.PetaPoco;
 using NHibernate.Criterion;
+using NHibernate.Linq;
 using NLog;
 using PersistentDemo.Models;
 
@@ -208,37 +209,103 @@ namespace PersistentDemo {
             using (var uow = new NHibernateUnitOfWork(context))
             using (uow.Begin()) {
                 var session = uow.OpenSession();
-                var drawer = new Drawer {
+                var cover = new Cover {
                     Id = 2,
-                    Name = "name"
+                    Picture = "picture",
                 };
-                var desktop = new Desktop() {
+                var book = new Book() {
                     Id = 3,
-                    Title = "title",
-                    Drawer = drawer,
+                    Author = "jusfrw",
+                    Title = "Title",
+                    Cover = cover,
                 };
-                drawer.Desktop = desktop;
-                session.Save(desktop);
+                session.Save(book);
 
                 Console.WriteLine();
-                Console.WriteLine("ISession.Save<Desktop>(3)");
-                session.Save(desktop);
+                Console.WriteLine("ISession.Save<Book>(3)");
             }
 
-            Console.WriteLine();
-            Console.WriteLine("ISession.Get<Desktop>(3)");
             using (var uow = new NHibernateUnitOfWork(context))
             using (uow.Begin()) {
+                Console.WriteLine();
+                Console.WriteLine("ISession.Get<Book>(3) with trans commit");
+
                 var session = uow.OpenSession();
-                var desktop = session.Get<Desktop>(3);
+                var book = session.Get<Book>(3);
+                Console.WriteLine("Book.Id: {0}", book.Id);
+                Console.WriteLine("Book.Title: {0}", book.Title);
+
+                Console.WriteLine("Book.Cover.Id: {0}", book.Cover.Id);
+                Console.WriteLine("Book.Cover.Picture: {0}", book.Cover.Picture);
+            }
+            
+            using (var uow = new NHibernateUnitOfWork(context))
+            using (uow.Begin()) {
+                Console.WriteLine();
+                Console.WriteLine("ISession.Get<Book>(3) with trans commit");
+
+                var session = uow.OpenSession();
+                var book = session.Get<Book>(3);
+                Console.WriteLine("Book.Id: {0}", book.Id);
+                Console.WriteLine("Book.Title: {0}", book.Title);
+                Console.WriteLine("eof");
+                //Console.WriteLine("book.Cover.Id: {0}", book.Cover.Id);
+                //Console.WriteLine("book.Cover.Picture: {0}", book.Cover.Picture);
             }
 
-            Console.WriteLine();
-            Console.WriteLine("ISession.Get<Drawer>(2)");
-            using (var uow = new NHibernateUnitOfWork(context))
-            using (uow.Begin()) {
+            using (var uow = new NHibernateUnitOfWork(context)) {
+                uow.Begin();
+                Console.WriteLine();
+                Console.WriteLine("ISession.Get<Book>(3) with trans rollback");
+
                 var session = uow.OpenSession();
-                var desktop = session.Get<Drawer>(2);
+                var book = session.Get<Book>(3);
+                Console.WriteLine("Book.Id: {0}", book.Id);
+                Console.WriteLine("Book.Title: {0}", book.Title);
+
+                Console.WriteLine("Book.Picture.Id: {0}", book.Cover.Id);
+                Console.WriteLine("Book.Picture.Name: {0}", book.Cover.Picture);
+            }
+
+            using (var uow = new NHibernateUnitOfWork(context)) {
+                uow.Begin();
+                Console.WriteLine();
+                Console.WriteLine("ISession.Get<Book>(3) with trans");
+
+                var session = uow.OpenSession();
+                var book = session.Get<Book>(3);
+                Console.WriteLine("Book.Id: {0}", book.Id);
+                Console.WriteLine("Book.Title: {0}", book.Title);
+                session.Clear();
+                Console.WriteLine("ISession.Clear");
+                //Console.WriteLine("book.Cover.Id: {0}", book.Picture.Id);
+                //Console.WriteLine("book.Cover.Picture: {0}", book.Cover.Picture);
+            }
+
+            using (var uow = new NHibernateUnitOfWork(context))
+            /*using (uow.Begin())*/ {
+                Console.WriteLine();
+                Console.WriteLine("ISession.Get<Book>(3) without trans");
+
+                var session = uow.OpenSession();
+                var book = session.Get<Book>(3);
+                Console.WriteLine("Book.Id: {0}", book.Id);
+                Console.WriteLine("Book.Title: {0}", book.Title);
+
+                Console.WriteLine("Book.Cover.Id: {0}", book.Cover.Id);
+                Console.WriteLine("Book.Cover.Name: {0}", book.Cover.Picture);
+            }
+
+            using (var uow = new NHibernateUnitOfWork(context))
+            /*using (uow.Begin())*/ {
+                Console.WriteLine();
+                Console.WriteLine("ISession.Get<Book>(3) without trans");
+
+                var session = uow.OpenSession();
+                var book = session.Get<Book>(3);
+                Console.WriteLine("Book.Id: {0}", book.Id);
+                Console.WriteLine("Book.Title: {0}", book.Title);
+                Console.WriteLine("eof");
             }
         }
 

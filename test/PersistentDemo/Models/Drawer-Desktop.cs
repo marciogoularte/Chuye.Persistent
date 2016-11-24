@@ -18,22 +18,22 @@ namespace PersistentDemo.Models {
         public virtual Drawer Drawer { get; set; }
     }
 
-    class DrawerMap : ClassMap<Drawer> {
-        public DrawerMap() {
-            Id(x => x.Id).GeneratedBy.Assigned();
-            Map(x => x.Name);
-            References(x => x.Desktop, "DesktopId")
-                .NotFound.Ignore();
-        }
-    }
+    //class DrawerMap : ClassMap<Drawer> {
+    //    public DrawerMap() {
+    //        Id(x => x.Id).GeneratedBy.Assigned();
+    //        Map(x => x.Name);
+    //        References(x => x.Desktop, "DesktopId")
+    //            .NotFound.Ignore();
+    //    }
+    //}
 
-    class DesktopMap : ClassMap<Desktop> {
-        public DesktopMap() {
-            Id(x => x.Id).GeneratedBy.Assigned();
-            Map(x => x.Title);
-            References(x => x.Drawer, "DrawerId")
-                .Cascade.All()
-                .NotFound.Ignore();
-        }
-    }
+    //class DesktopMap : ClassMap<Desktop> {
+    //    public DesktopMap() {
+    //        Id(x => x.Id).GeneratedBy.Assigned();
+    //        Map(x => x.Title);
+    //        References(x => x.Drawer, "DrawerId")
+    //            .Cascade.All()
+    //            .NotFound.Ignore();
+    //    }
+    //}
 }
