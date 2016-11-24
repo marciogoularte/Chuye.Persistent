@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using FluentNHibernate.Mapping;
 
 namespace PersistentDemo.Models {
-    public class Cover {
+    class Cover {
         public virtual Int32 Id { get; set; }
         public virtual String Picture { get; set; }
     }
 
-    public class Book {
+    class Book {
         public virtual Int32 Id { get; set; }
         public virtual String Author { get; set; }
         public virtual String Title { get; set; }
@@ -30,11 +30,10 @@ namespace PersistentDemo.Models {
             Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Title);
             Map(x => x.Author);
-            References(x => x.Cover, "CoverId")
+            HasOne(x => x.Cover)
                 .LazyLoad(Laziness.NoProxy)
-                .Unique()
-                .Cascade.All()
-                .NotFound.Ignore();
+                .Constrained()
+                .Cascade.All();
         }
     }
 }
