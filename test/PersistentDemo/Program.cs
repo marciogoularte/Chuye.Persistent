@@ -27,6 +27,8 @@ namespace PersistentDemo {
             //PetaPocoDbContextTest();
         }
 
+        #region petapoco
+
         static void PetaPocoDbContextTest() {
             var ctx = new PetaPocoDbContext("test");
             var uow = new PetaPocoUnitOfWork(ctx);
@@ -72,6 +74,8 @@ namespace PersistentDemo {
             }
             #endregion
         }
+
+        #endregion
 
         /* 事务控制, 非事务行为, benchmark
         ### 事务控制
@@ -214,6 +218,10 @@ namespace PersistentDemo {
                 };
                 drawer.Desktop = desktop;
                 desktop.Drawers.Add(drawer);
+
+
+                Console.WriteLine();
+                Console.WriteLine("ISession.Save<Desktop>(3)");
                 session.Save(desktop);
             }
 
