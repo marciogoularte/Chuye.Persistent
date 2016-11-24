@@ -7,24 +7,36 @@ using FluentNHibernate.Mapping;
 
 namespace PersistentDemo.Models {
     class Drawer {
-        public virtual Int32 Id { get; set; }
-        public virtual String Name { get; set; }
         public virtual Desktop Desktop { get; set; }
+        public virtual String Name { get; set; }
+
+        public override bool Equals(object obj) {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            var child = obj as Drawer;
+
+            if (child != null && child.Desktop != null) {
+                return child.Desktop.Id == Desktop.Id;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode() {
+            return Desktop.Id;
+        }
     }
 
     class Desktop {
         public virtual Int32 Id { get; set; }
         public virtual String Title { get; set; }
-        public virtual Drawer Drawer { get; set; }
     }
 
     class DrawerMap : ClassMap<Drawer> {
         public DrawerMap() {
-            Id(x => x.Id).GeneratedBy.Assigned();
+            CompositeId().KeyReference(x => x.Desktop, "Id");
             Map(x => x.Name);
-            References(x => x.Desktop, "DesktopId")
-                .Unique()
-                .NotFound.Ignore();
         }
     }
 
@@ -32,9 +44,6 @@ namespace PersistentDemo.Models {
         public DesktopMap() {
             Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Title);
-            HasOne(x => x.Drawer).PropertyRef(x => x.Desktop)
-                .Fetch.Select()
-                .Cascade.All();
         }
     }
 }
