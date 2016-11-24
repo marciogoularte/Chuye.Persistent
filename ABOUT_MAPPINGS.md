@@ -1,16 +1,22 @@
 ## 前言
 
 - [jagregory/fluent-nhibernate](https://github.com/jagregory/fluent-nhibernate/wiki/Fluent-mapping)
-- [关于one-to-one的lazy load(NHibernate)](http://blog.csdn.net/flymaidou/article/details/4482352)
 
+Nhibernate 的Lazy load 对属性并不生效，这意味着以下 Poco 和 Mappinp 并不会延时加载
 > One of the questions that is asked again and again in the NHibernate user mailing list is the question about whether NHibernate supports lazy-loading of properties. The answer is NO - at least for the time being.
 
 * References
 * HasMany
 * HasOne
-* DDD
+    * HasOne().Fetch.Select()
+* CompositeId
+* SubClass
+* References, ManyToOne().LazyLoad()
+* HasOne, .LazyLoad(Laziness.NoProxy)
+    * Constrained()
+    * PropertyRef()
+* Summary
 
-Nhibernate 的Lazy load 对属性并不生效，这意味着以下 Poco 和 Mappinp 并不会延时加载
 
 ## References
 
@@ -1584,7 +1590,7 @@ Book.Cover.Picture: picture
 
 并没有产生 left join 一类查询
 
-## 小结
+## Summary
 * HasMany 默认延迟加载
 * References/HasOne 可以通过 .LazyLoad(Laziness.NoProxy) 实现延迟加载
 * References/HasOne 延迟加载需要处理事务控制下 ISession释放前会加载已经被延迟访问的对象的问题
