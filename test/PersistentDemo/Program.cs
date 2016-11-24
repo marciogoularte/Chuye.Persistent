@@ -208,14 +208,10 @@ namespace PersistentDemo {
             using (var uow = new NHibernateUnitOfWork(context))
             using (uow.Begin()) {
                 var session = uow.OpenSession();
-                var desktop = new Desktop() {
-                    Id = 3,
-                    Title = "title",
-                };
-                session.Save(desktop);
                 var drawer = new Drawer {
-                    Desktop = desktop,
+                    Id = 3,
                     Name = "name",
+                    Title = "title",
                 };
                 session.Save(drawer);
 
@@ -237,7 +233,7 @@ namespace PersistentDemo {
             using (var uow = new NHibernateUnitOfWork(context))
             using (uow.Begin()) {
                 var session = uow.OpenSession();
-                //var desktop = session.Get<Drawer>(3);
+                var desktop = session.Get<Drawer>(3);
             }
         }
 

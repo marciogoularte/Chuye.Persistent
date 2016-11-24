@@ -6,43 +6,25 @@ using System.Threading.Tasks;
 using FluentNHibernate.Mapping;
 
 namespace PersistentDemo.Models {
-    class Drawer {
-        public virtual Desktop Desktop { get; set; }
+    class Desktop  {
+        public virtual Int32 Id { get; set; }
         public virtual String Name { get; set; }
-
-        public override bool Equals(object obj) {
-            if (obj == null || GetType() != obj.GetType())
-                return false;
-
-            var child = obj as Drawer;
-
-            if (child != null && child.Desktop != null) {
-                return child.Desktop.Id == Desktop.Id;
-            }
-
-            return false;
-        }
-
-        public override int GetHashCode() {
-            return Desktop.Id;
-        }
     }
 
-    class Desktop {
-        public virtual Int32 Id { get; set; }
+    class Drawer : Desktop {
         public virtual String Title { get; set; }
     }
 
-    class DrawerMap : ClassMap<Drawer> {
-        public DrawerMap() {
-            CompositeId().KeyReference(x => x.Desktop, "Id");
+    class DesktopMap : ClassMap <Desktop> {
+        public DesktopMap() {
+            Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Name);
         }
     }
 
-    class DesktopMap : ClassMap<Desktop> {
-        public DesktopMap() {
-            Id(x => x.Id).GeneratedBy.Assigned();
+    class DrawerMap : SubclassMap<Drawer> {
+        public DrawerMap() {
+            KeyColumn("Id");
             Map(x => x.Title);
         }
     }
