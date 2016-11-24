@@ -205,6 +205,9 @@ namespace PersistentDemo {
         }
 
         private static void ReferenceMapSaveTest() {
+            //此模型下不使用数据库的事实约束
+            //new SchemaExport(conf).Create(true, true); //DO NOT USE
+
             var context = new DbContext();
             using (var uow = new NHibernateUnitOfWork(context))
             using (uow.Begin()) {
@@ -219,7 +222,7 @@ namespace PersistentDemo {
                     Title = "Title",
                     Cover = cover,
                 };
-                //cover.Book = book;
+                cover.Book = book;
                 session.Save(book);
 
                 Console.WriteLine();
