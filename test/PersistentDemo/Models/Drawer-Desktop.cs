@@ -33,7 +33,7 @@ namespace PersistentDemo.Models {
             Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Title);
             HasOne(x => x.Drawer).PropertyRef(x => x.Desktop)
-                //.Fetch.Join()
+                .Fetch.Select()
                 .Cascade.All();
         }
     }
