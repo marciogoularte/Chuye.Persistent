@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using FluentNHibernate.Mapping;
 
 namespace PersistentDemo.Models {
-    class Cover {
+    public class Cover {
         public virtual Int32 Id { get; set; }
         public virtual String Picture { get; set; }
     }
 
-    class Book {
+    public class Book {
         public virtual Int32 Id { get; set; }
         public virtual String Author { get; set; }
         public virtual String Title { get; set; }

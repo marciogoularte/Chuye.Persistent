@@ -219,24 +219,11 @@ namespace PersistentDemo {
                     Title = "Title",
                     Cover = cover,
                 };
+                //cover.Book = book;
                 session.Save(book);
 
                 Console.WriteLine();
                 Console.WriteLine("ISession.Save<Book>(3)");
-            }
-
-            using (var uow = new NHibernateUnitOfWork(context))
-            using (uow.Begin()) {
-                Console.WriteLine();
-                Console.WriteLine("ISession.Get<Book>(3) with trans commit");
-
-                var session = uow.OpenSession();
-                var book = session.Get<Book>(3);
-                Console.WriteLine("Book.Id: {0}", book.Id);
-                Console.WriteLine("Book.Title: {0}", book.Title);
-
-                Console.WriteLine("Book.Cover.Id: {0}", book.Cover.Id);
-                Console.WriteLine("Book.Cover.Picture: {0}", book.Cover.Picture);
             }
             
             using (var uow = new NHibernateUnitOfWork(context))
@@ -252,24 +239,7 @@ namespace PersistentDemo {
                 //Console.WriteLine("book.Cover.Id: {0}", book.Cover.Id);
                 //Console.WriteLine("book.Cover.Picture: {0}", book.Cover.Picture);
             }
-
-
-            using (var uow = new NHibernateUnitOfWork(context)) {
-                uow.Begin();
-                Console.WriteLine();
-                Console.WriteLine("ISession.Get<Book>(3) with trans commit, but ISession.Clear()");
-
-                var session = uow.OpenSession();
-                var book = session.Get<Book>(3);
-                Console.WriteLine("Book.Id: {0}", book.Id);
-                Console.WriteLine("Book.Title: {0}", book.Title);
-                session.Clear();
-                Console.WriteLine("ISession.Clear()");
-                //Console.WriteLine("book.Cover.Id: {0}", book.Picture.Id);
-                //Console.WriteLine("book.Cover.Picture: {0}", book.Cover.Picture);
-            }
             
-
             using (var uow = new NHibernateUnitOfWork(context))
             /*using (uow.Begin())*/ {
                 Console.WriteLine();
@@ -281,19 +251,7 @@ namespace PersistentDemo {
                 Console.WriteLine("Book.Title: {0}", book.Title);
 
                 Console.WriteLine("Book.Cover.Id: {0}", book.Cover.Id);
-                Console.WriteLine("Book.Cover.Name: {0}", book.Cover.Picture);
-            }
-
-            using (var uow = new NHibernateUnitOfWork(context))
-            /*using (uow.Begin())*/ {
-                Console.WriteLine();
-                Console.WriteLine("ISession.Get<Book>(3) without trans");
-
-                var session = uow.OpenSession();
-                var book = session.Get<Book>(3);
-                Console.WriteLine("Book.Id: {0}", book.Id);
-                Console.WriteLine("Book.Title: {0}", book.Title);
-                Console.WriteLine("eof");
+                Console.WriteLine("Book.Cover.Picture: {0}", book.Cover.Picture);
             }
         }
 
