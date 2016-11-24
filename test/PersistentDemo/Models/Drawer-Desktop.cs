@@ -15,11 +15,7 @@ namespace PersistentDemo.Models {
     class Desktop {
         public virtual Int32 Id { get; set; }
         public virtual String Title { get; set; }
-        public virtual IList<Drawer> Drawers { get; set; }
-
-        public Desktop() {
-            Drawers = new List<Drawer>();
-        }
+        public virtual Drawer Drawer { get; set; }
     }
 
     class DrawerMap : ClassMap<Drawer> {
@@ -27,6 +23,7 @@ namespace PersistentDemo.Models {
             Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Name);
             References(x => x.Desktop, "DesktopId")
+                .Unique()
                 .NotFound.Ignore();
         }
     }
@@ -35,7 +32,8 @@ namespace PersistentDemo.Models {
         public DesktopMap() {
             Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Title);
-            HasMany(x => x.Drawers).KeyColumn("DesktopId")
+            HasOne(x => x.Drawer).PropertyRef(x => x.Desktop)
+                //.Fetch.Join()
                 .Cascade.All();
         }
     }

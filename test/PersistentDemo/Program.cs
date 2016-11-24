@@ -217,8 +217,8 @@ namespace PersistentDemo {
                     Title = "title",
                 };
                 drawer.Desktop = desktop;
-                desktop.Drawers.Add(drawer);
-
+                desktop.Drawer = drawer;
+                session.Save(desktop);
 
                 Console.WriteLine();
                 Console.WriteLine("ISession.Save<Desktop>(3)");
