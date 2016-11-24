@@ -9,7 +9,7 @@ namespace PersistentDemo.Models {
     public class Cover {
         public virtual Int32 Id { get; set; }
         public virtual String Picture { get; set; }
-        public virtual Book Book { get; set; }
+        public virtual Int32 BookId { get; set; }
     }
 
     public class Book {
@@ -23,8 +23,7 @@ namespace PersistentDemo.Models {
         public CoverMap() {
             Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Picture);
-            References(x => x.Book, "BookId")
-                .LazyLoad(Laziness.NoProxy);
+            Map(x => x.BookId);
         }
     }
 
@@ -36,7 +35,7 @@ namespace PersistentDemo.Models {
             HasOne(x => x.Cover)
                 .LazyLoad(Laziness.NoProxy)
                 //.Constrained()
-                .PropertyRef(x => x.Book)
+                .PropertyRef(x => x.BookId)
                 .Cascade.All();
         }
     }

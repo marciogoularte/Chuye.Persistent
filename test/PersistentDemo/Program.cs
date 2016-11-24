@@ -219,7 +219,7 @@ namespace PersistentDemo {
                     Title = "Title",
                     Cover = cover,
                 };
-                cover.Book = book;
+                cover.BookId = book.Id;
                 session.Save(book);
 
                 Console.WriteLine();
@@ -264,8 +264,8 @@ namespace PersistentDemo {
                 Console.WriteLine("Cover.Id: {0}", cover.Id);
                 Console.WriteLine("Cover.Picture: {0}", cover.Picture);
                 
-                Console.WriteLine("Cover.Book.Id: {0}", cover.Book.Id);
-                Console.WriteLine("Cover.Book.Picture: {0}", cover.Book.Author);
+                //Console.WriteLine("Cover.Book.Id: {0}", cover.Book.Id);
+                //Console.WriteLine("Cover.Book.Picture: {0}", cover.Book.Author);
             }
         }
 
