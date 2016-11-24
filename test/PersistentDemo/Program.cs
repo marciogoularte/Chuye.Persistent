@@ -215,10 +215,10 @@ namespace PersistentDemo {
                 var desktop = new Desktop() {
                     Id = 3,
                     Title = "title",
+                    Drawer = drawer,
                 };
                 drawer.Desktop = desktop;
-                desktop.Drawers.Add(drawer);
-
+                session.Save(desktop);
 
                 Console.WriteLine();
                 Console.WriteLine("ISession.Save<Desktop>(3)");
