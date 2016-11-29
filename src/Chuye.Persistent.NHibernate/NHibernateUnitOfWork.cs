@@ -51,6 +51,13 @@ namespace Chuye.Persistent.NHibernate {
             return new TransactionKeeper(this);
         }
 
+        public virtual void Clear() {
+            if (_session == null) {
+                return;
+            }
+            _session.Clear();
+        }
+
         //仅在事务已创建且处于活动中时回滚事务
         public virtual void Rollback() {
             if (_session != null && _session.Transaction.IsActive) {

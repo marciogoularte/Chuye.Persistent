@@ -53,24 +53,15 @@
     <Compile Include="ExpressionBuilder.cs" />
     <Compile Include="NHibernateDbContext.cs" />
     <Compile Include="NHibernateInterceptor.cs" />
-    <Compile Include="NHibernateRepository.cs" />
     <Compile Include="NHibernateUnitOfWork.cs" />
     <Compile Include="NHibernateRepository`.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chuye.Persistent.Repository\Chuye.Persistent.Repository.csproj">
-      <Project>{c16886a6-4bd1-44b5-9d88-1df825dba639}</Project>
-      <Name>Chuye.Persistent.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chuye.Persistent\Chuye.Persistent.csproj">
-      <Project>{c92a79fa-9d1e-41e0-860a-d6a1b858efc0}</Project>
-      <Name>Chuye.Persistent</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <Import Project="..\Chuye.Persistent\Chuye.Persistent.projitems" Label="Shared" />
+  <Import Project="..\Chuye.Persistent.Repository\Chuye.Persistent.Repository.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
