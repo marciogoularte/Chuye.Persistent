@@ -5,15 +5,15 @@ using NHibernate.Cfg;
 namespace Chuye.Persistent.NHibernate {
     public abstract class NHibernateDbContext : IDisposable {
         private readonly Guid _id;
-        private Boolean _alwaysCommit;
+        private NHibernateDbConfig _config;
         private ISessionFactory _sessionFactory;
 
-        public Guid ID {
+        public Guid Id {
             get { return _id; }
         }
 
-        internal virtual Boolean AlwaysCommit {
-            get { return _alwaysCommit; }
+        internal NHibernateDbConfig Config {
+            get { return _config; }
         }
 
         internal ISessionFactory SessionFactory {
@@ -22,9 +22,7 @@ namespace Chuye.Persistent.NHibernate {
 
         public NHibernateDbContext() {
             _id = Guid.NewGuid(); ;
-            var alwaysCommit = System.Configuration.ConfigurationManager.AppSettings
-                .Get("NHibernate:alwaysCommit");
-            _alwaysCommit = Boolean.TrueString.Equals(alwaysCommit, StringComparison.OrdinalIgnoreCase);
+            _config = NHibernateDbConfig.FromConfig("NHibernate:DbConfig");
         }
 
         protected void SetupConfiguration(Func<Configuration> func) {

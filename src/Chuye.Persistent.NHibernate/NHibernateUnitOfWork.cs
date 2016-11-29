@@ -12,10 +12,11 @@ namespace Chuye.Persistent.NHibernate {
         private static Int32 _count = 0;
         private readonly Guid _id = Guid.NewGuid();
         private readonly NHibernateDbContext _context;
+        private readonly NHibernateDbConfig _config;
         private ISession _session;
-        private Boolean _suspendTransaction = false;
+        private Boolean _suspendedTransaction;
 
-        public Guid ID {
+        public Guid Id {
             get { return _id; }
         }
 
@@ -23,56 +24,99 @@ namespace Chuye.Persistent.NHibernate {
             get { return _context; }
         }
 
-        public NHibernateUnitOfWork(NHibernateDbContext context) {
-            _context = context;
+        public NHibernateUnitOfWork(NHibernateDbContext context)
+            : this(context, context.Config) {
+
         }
 
-        public virtual ISession OpenSession() {
-            if (_session != null) {
-                return _session;
+        public NHibernateUnitOfWork(NHibernateDbContext context, NHibernateDbConfig config) {
+            _context = context;
+            _config = config;
+        }
+
+        public ISession OpenSession() {
+            EnsureSessionOpen();
+            if (_config.TransactionDemand == TransactionDemand.Essential) {
+                EnsureTransactionBegin();
             }
-            Debug.WriteLine("(NH:Session open, count {0})",
-                Interlocked.Increment(ref _count));
-            _session = _context.SessionFactory.OpenSession();
-            if (_suspendTransaction && !_session.Transaction.IsActive) {
-                Debug.WriteLine("(NH:Transaction begin)");
-                _session.BeginTransaction();
+            else if (_config.TransactionDemand == TransactionDemand.Manual) {
+                lock (_context) {
+                    if (_suspendedTransaction) {
+                        EnsureTransactionBegin();
+                        _suspendedTransaction = false;
+                    }
+                }
             }
             return _session;
         }
 
-        //仅在Session对象已创建, 但事务未创建或已提交的情况下开启新事务
-        public virtual IDisposable Begin() {
-            _suspendTransaction = true;
-            if (_session != null && !_session.Transaction.IsActive) {
+        private void EnsureSessionOpen() {
+            if (_session == null) {
+                Debug.WriteLine("(NH:Session open, count {0})", Interlocked.Increment(ref _count));
+                _session = _context.SessionFactory.OpenSession();
+                if (_config.TransactionDemand == TransactionDemand.Manual) {
+                    _session.FlushMode = FlushMode.Always;
+                }
+            }
+        }
+
+        private void EnsureTransactionBegin() {
+            if (!_session.Transaction.IsActive) {
                 Debug.WriteLine("(NH:Transaction begin)");
                 _session.BeginTransaction();
             }
-            return new TransactionKeeper(this);
         }
 
-        public virtual void Clear() {
+        private IDisposable GetTransactionKeeper() {
+            return new NHibernateTransactionKeeper(this);
+        }
+
+        private void EnsureTransactionRollback() {
+            _session.Clear();
+            if (_session.Transaction.IsActive) {
+                Debug.WriteLine("(NH:Transaction rollback)");
+                _session.Transaction.Rollback();
+            }
+        }
+
+        public IDisposable Begin() {
+            if (_config.TransactionTime == TransactionTime.Immediately) {
+                EnsureSessionOpen();
+                EnsureTransactionBegin();
+            }
+            else {
+                if (_session == null) {
+                    _suspendedTransaction = true;
+                }
+                else {
+                    EnsureTransactionBegin();
+                }
+            }
+            return GetTransactionKeeper();
+        }
+
+        public void Rollback() {
             if (_session == null) {
                 return;
             }
-            _session.Clear();
-        }
-
-        //仅在事务已创建且处于活动中时回滚事务
-        public virtual void Rollback() {
-            if (_session != null && _session.Transaction.IsActive) {
-                Debug.WriteLine("(NH:Transaction rollback)");
-                _session.Transaction.Rollback();
-                _session.Clear();
+            EnsureTransactionRollback();
+            if (_config.TransactionDemand == TransactionDemand.Essential) {
+                EnsureTransactionBegin();
             }
-            _suspendTransaction = false;
         }
 
         //仅在事务已创建且处于活动中时提交事务
-        public virtual void Commit() {
+        public void Commit() {
             if (_session == null) {
                 return;
             }
+            EnsureTransactionCommit();
+            if (_config.TransactionDemand == TransactionDemand.Essential) {
+                EnsureTransactionBegin();
+            }
+        }
+
+        private void EnsureTransactionCommit() {
             try {
                 if (_session.Transaction.IsActive) {
                     Debug.WriteLine("(NH:Transaction commit)");
@@ -84,7 +128,6 @@ namespace Chuye.Persistent.NHibernate {
                     Debug.WriteLine("(NH:Transaction rollback)");
                     _session.Transaction.Rollback();
                 }
-                _session.Clear();
                 throw;
             }
             finally {
@@ -92,7 +135,6 @@ namespace Chuye.Persistent.NHibernate {
                     Debug.WriteLine("(NH:Transaction dispose)");
                     _session.Transaction.Dispose();
                 }
-                _suspendTransaction = false;
             }
         }
 
@@ -101,16 +143,16 @@ namespace Chuye.Persistent.NHibernate {
                 return;
             }
             try {
-                if (_context.AlwaysCommit) {
-                    if (_session.Transaction.IsActive) {
-                        Commit();
-                    }
-                    else {
-                        Flush();
-                    }
+                if (_config.ModificationStragety == ModificationStragety.Discard) {
+                    EnsureTransactionRollback();
                 }
                 else {
-                    Rollback();
+                    if (_session.Transaction.IsActive) {
+                        EnsureTransactionCommit();
+                    }
+                    else {
+                        _session.Flush();
+                    }
                 }
             }
             finally {
@@ -130,20 +172,20 @@ namespace Chuye.Persistent.NHibernate {
             }
         }
 
-        public void Flush() {
-            if (_session != null) {
-                _session.Flush();
-            }
-        }
-
-        internal class TransactionKeeper : IDisposable {
+        internal class NHibernateTransactionKeeper : IDisposable {
             private readonly NHibernateUnitOfWork _unitOfWork;
-            public TransactionKeeper(NHibernateUnitOfWork unitOfWork) {
+            public NHibernateTransactionKeeper(NHibernateUnitOfWork unitOfWork) {
                 _unitOfWork = unitOfWork;
             }
 
             public void Dispose() {
-                _unitOfWork.Commit();
+                if (_unitOfWork._config.ModificationStragety == ModificationStragety.Discard) {
+                    _unitOfWork.Rollback();
+                }
+                else {
+                    _unitOfWork.Commit();
+                }
+
             }
         }
     }

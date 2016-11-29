@@ -12,8 +12,10 @@ namespace PersistentDemo {
         static ILogger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args) {
 
+            Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
+
             //ReferenceMapNoUsingTest();
-            ReferenceMapSaveTest();
+            //ReferenceMapSaveTest();
             //ReferenceAsIdTest();
             //ParentChildTest();
 
@@ -25,6 +27,84 @@ namespace PersistentDemo {
             //Insert_with_petapoco();
 
             //PetaPocoDbContextTest();
+
+            TransactionManage();
+        }
+
+        static void TransactionManage() {
+            var config = new NHibernateDbConfig {
+                ModificationStragety = ModificationStragety.Discard,
+                TransactionDemand =  TransactionDemand.Manual,
+                TransactionTime = TransactionTime.SessionStarted
+            };
+
+            var context = new DbContext();
+            using (var uow = new NHibernateUnitOfWork(context, config)) {
+                var session = uow.OpenSession();
+                //TransactionTime.Immediately, use Begin(), get true
+                Console.WriteLine(session.Transaction.IsActive);
+
+                uow.Begin();
+                //TransactionTime.Immediately, use Begin(), get true
+                Console.WriteLine(session.Transaction.IsActive);
+
+                session.CreateSQLQuery("select now()").ExecuteUpdate();
+                Console.WriteLine(session.Transaction.IsActive);
+            }
+            Console.WriteLine();
+
+            using (var uow = new NHibernateUnitOfWork(context, config)) {
+                uow.Begin();
+                var session = uow.OpenSession();
+                //TransactionTime.Immediately, use Begin(), get true
+                Console.WriteLine(session.Transaction.IsActive);
+
+                uow.Commit();
+                Console.WriteLine(session.Transaction.IsActive);
+            }
+            Console.WriteLine();
+
+            config = new NHibernateDbConfig {
+                ModificationStragety = ModificationStragety.Submit,
+                TransactionDemand = TransactionDemand.Manual,
+                TransactionTime = TransactionTime.Immediately
+            };
+            using (var uow = new NHibernateUnitOfWork(context, config)) {
+                uow.Begin();
+                var session = uow.OpenSession();
+                //TransactionTime.Immediately, use Begin(), get true
+                Console.WriteLine(session.Transaction.IsActive);
+            }
+            Console.WriteLine();
+
+            config = new NHibernateDbConfig {
+                ModificationStragety = ModificationStragety.Discard,
+                TransactionDemand = TransactionDemand.Essential,
+                TransactionTime = TransactionTime.SessionStarted
+            };
+
+            using (var uow = new NHibernateUnitOfWork(context, config)) {
+                var session = uow.OpenSession();
+                //TransactionDemand.Essential, get true
+                Console.WriteLine(session.Transaction.IsActive);
+
+                uow.Commit();
+                //Commit(), get true though 
+                Console.WriteLine(session.Transaction.IsActive);
+            }
+            Console.WriteLine();
+
+            config = new NHibernateDbConfig {
+                ModificationStragety = ModificationStragety.Submit,
+                TransactionDemand = TransactionDemand.Essential,
+                TransactionTime = TransactionTime.SessionStarted
+            };
+            using (var uow = new NHibernateUnitOfWork(context, config)) {
+                var session = uow.OpenSession();
+                //TransactionTime.Immediately, use Begin(), get true
+                Console.WriteLine(session.Transaction.IsActive);
+            }
+            Console.WriteLine();
         }
 
         static void PetaPocoDbContextTest() {
@@ -193,7 +273,6 @@ namespace PersistentDemo {
                 };
                 session.Save(drivingLicense);
 
-                uow.Flush();
                 //1. NHibernate:alwaysCommit=false，不显式调用 flush 可能导致变更保存否未知；
                 //2. NHibernate:alwaysCommit=true，flush 将在 dispose 时被动调用
             }
@@ -264,7 +343,6 @@ namespace PersistentDemo {
 
                 theOne.Min_lvl++;
                 repo.Update(theOne);
-                context.Flush();
             }
 
             using (var db = new DbContext())
@@ -272,7 +350,6 @@ namespace PersistentDemo {
                 var repo = new NHibernateRepository<Job>(context);
                 theOne.Max_lvl--;
                 repo.Save(theOne);
-                context.Flush();
             }
         }
 
@@ -326,7 +403,6 @@ namespace PersistentDemo {
                     };
                     repo.Create(person);
                 }
-                context.Flush();
                 //context.Commit();
             }
             stopwatch.Stop();
