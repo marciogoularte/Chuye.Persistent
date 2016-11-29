@@ -9,7 +9,7 @@ using NHibernate;
 
 namespace Chuye.Persistent.NHibernate {
     public class NHibernateUnitOfWork : IUnitOfWork {
-        private static Int32 _count = 0;
+        private Int32 _count = 0;
         private readonly Guid _id = Guid.NewGuid();
         private readonly NHibernateDbContext _context;
         private readonly NHibernateDbConfig _config;
@@ -18,6 +18,10 @@ namespace Chuye.Persistent.NHibernate {
 
         public Guid Id {
             get { return _id; }
+        }
+
+        internal Int32 Count {
+            get { return _count; }
         }
 
         internal NHibernateDbContext Context {
@@ -36,10 +40,10 @@ namespace Chuye.Persistent.NHibernate {
 
         public ISession OpenSession() {
             EnsureSessionOpen();
-            if (_config.TransactionDemand == TransactionDemand.Essential) {
+            if (_config.Stragety.Require == TransactionRequire.Essential) {
                 EnsureTransactionBegin();
             }
-            else if (_config.TransactionDemand == TransactionDemand.Manual) {
+            else if (_config.Stragety.Require == TransactionRequire.Manual) {
                 lock (_context) {
                     if (_suspendedTransaction) {
                         EnsureTransactionBegin();
@@ -54,7 +58,7 @@ namespace Chuye.Persistent.NHibernate {
             if (_session == null) {
                 Debug.WriteLine("(NH:Session open, count {0})", Interlocked.Increment(ref _count));
                 _session = _context.SessionFactory.OpenSession();
-                if (_config.TransactionDemand == TransactionDemand.Manual) {
+                if (_config.Stragety.Require == TransactionRequire.Manual) {
                     _session.FlushMode = FlushMode.Always;
                 }
             }
@@ -80,7 +84,7 @@ namespace Chuye.Persistent.NHibernate {
         }
 
         public IDisposable Begin() {
-            if (_config.TransactionTime == TransactionTime.Immediately) {
+            if (_config.Stragety.Time == TransactionTime.Immediately) {
                 EnsureSessionOpen();
                 EnsureTransactionBegin();
             }
@@ -100,7 +104,7 @@ namespace Chuye.Persistent.NHibernate {
                 return;
             }
             EnsureTransactionRollback();
-            if (_config.TransactionDemand == TransactionDemand.Essential) {
+            if (_config.Stragety.Require == TransactionRequire.Essential) {
                 EnsureTransactionBegin();
             }
         }
@@ -111,7 +115,7 @@ namespace Chuye.Persistent.NHibernate {
                 return;
             }
             EnsureTransactionCommit();
-            if (_config.TransactionDemand == TransactionDemand.Essential) {
+            if (_config.Stragety.Require == TransactionRequire.Essential) {
                 EnsureTransactionBegin();
             }
         }
@@ -143,16 +147,17 @@ namespace Chuye.Persistent.NHibernate {
                 return;
             }
             try {
-                if (_config.ModificationStragety == ModificationStragety.Discard) {
-                    EnsureTransactionRollback();
-                }
-                else {
+                if (_config.SaveUncommitted) {
                     if (_session.Transaction.IsActive) {
                         EnsureTransactionCommit();
                     }
                     else {
                         _session.Flush();
                     }
+                }
+                else {
+                    EnsureTransactionRollback();
+
                 }
             }
             finally {
@@ -163,15 +168,7 @@ namespace Chuye.Persistent.NHibernate {
                 _session = null;
             }
         }
-
-        public void Evict<TEntry>(params TEntry[] entries) {
-            if (_session != null) {
-                foreach (var entry in entries) {
-                    _session.Evict(entry);
-                }
-            }
-        }
-
+        
         internal class NHibernateTransactionKeeper : IDisposable {
             private readonly NHibernateUnitOfWork _unitOfWork;
             public NHibernateTransactionKeeper(NHibernateUnitOfWork unitOfWork) {
@@ -179,13 +176,12 @@ namespace Chuye.Persistent.NHibernate {
             }
 
             public void Dispose() {
-                if (_unitOfWork._config.ModificationStragety == ModificationStragety.Discard) {
-                    _unitOfWork.Rollback();
-                }
-                else {
+                if (_unitOfWork._config.SaveUncommitted) {
                     _unitOfWork.Commit();
                 }
-
+                else {
+                    _unitOfWork.Rollback();
+                }
             }
         }
     }

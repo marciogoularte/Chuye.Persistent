@@ -7,75 +7,61 @@ using System.Threading.Tasks;
 
 namespace Chuye.Persistent.NHibernate {
     public struct NHibernateDbConfig {
-        public TransactionDemand TransactionDemand;
-        public TransactionTime TransactionTime;
-        public ModificationStragety ModificationStragety;
+        public TransactionStragety Stragety;
+        public Boolean SaveUncommitted;
 
         public static readonly NHibernateDbConfig Default;
 
         static NHibernateDbConfig() {
             Default = new NHibernateDbConfig {
-                TransactionDemand = TransactionDemand.Manual,
-                TransactionTime = TransactionTime.SessionStarted,
-                ModificationStragety = ModificationStragety.Discard,
+                Stragety = new TransactionStragety {
+                    Require = TransactionRequire.Manual,
+                    Time = TransactionTime.Lazy,
+                },
+                SaveUncommitted = false
             };
         }
 
         public static NHibernateDbConfig FromConfig(String key) {
+            //Manual,SessionStarted,SaveUncommitted
             var config = ConfigurationManager.AppSettings.Get(key);
             if (config == null) {
                 return Default;
             }
 
-            var pairs = config.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(x => x.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries));
-
-            var demand = Default.TransactionDemand;
-            var modelPair = pairs.SingleOrDefault(x => x[0] == "model");
-            if (modelPair != null) {
-                if (!Enum.TryParse(modelPair[1], out demand)) {
-                    throw new ArgumentOutOfRangeException("model");
-                }
+            var values = config.Split(',');
+            if (values.Length < 2 || values.Length > 3) {
+                throw new ArgumentOutOfRangeException("config");
             }
 
-            var time = Default.TransactionTime;
-            var timePair = pairs.SingleOrDefault(x => x[0] == "time");
-            if (timePair != null) {
-                if (!Enum.TryParse(timePair[1], out time)) {
-                    throw new ArgumentOutOfRangeException("time");
-                }
-            }
+            var require = Default.Stragety.Require;
+            Enum.TryParse(values[0], true, out require);
 
-            var stragety = Default.ModificationStragety;
-            var stragetyPair = pairs.SingleOrDefault(x => x[0] == "stragety");
-            if (stragetyPair != null) {
-                if (!Enum.TryParse(stragetyPair[1], out stragety)) {
-                    throw new ArgumentOutOfRangeException("stragety");
-                }
-            }
+            var time = Default.Stragety.Time;
+            Enum.TryParse(values[1], true, out time);
 
+            var saveUncommitted = values.Length >= 2
+                && values[2].Equals("SaveUncommitted", StringComparison.OrdinalIgnoreCase);
             return new NHibernateDbConfig {
-                TransactionDemand = demand,
-                TransactionTime = time,
-                ModificationStragety = stragety,
+                Stragety = new TransactionStragety {
+                    Require = require,
+                    Time = time,
+                },
+                SaveUncommitted = saveUncommitted
             };
         }
     }
 
-    //public struct TransactionStragety {
-    //    public TransactionDemand Demand;
-    //    public TransactionTime Time;
-    //}
+    public struct TransactionStragety {
+        public TransactionRequire Require;
+        public TransactionTime Time;
+    }
 
-    public enum TransactionDemand {
+    public enum TransactionRequire {
         Manual, Essential
     }
 
     public enum TransactionTime {
-        SessionStarted, Immediately
-    }
-
-    public enum ModificationStragety {
-        Discard, Submit
+        Immediately, Lazy
     }
 }

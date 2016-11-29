@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
-using Chuye.Persistent.NHibernate;
-using Chuye.Persistent.PetaPoco;
-using NHibernate.Criterion;
 using NLog;
-using PersistentDemo.Models;
 
 namespace PersistentDemo {
     class Program {
         static ILogger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args) {
             Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
-            TransactionManage();
         }
 
-        static void TransactionManage() {
+        /*static void TransactionManage() {
             var config = new NHibernateDbConfig {
                 ModificationStragety = ModificationStragety.Discard,
                 TransactionDemand =  TransactionDemand.Manual,
@@ -89,6 +83,6 @@ namespace PersistentDemo {
                 Console.WriteLine(session.Transaction.IsActive);
             }
             Console.WriteLine();
-        }        
+        }   */
     }
 }
