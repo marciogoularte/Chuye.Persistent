@@ -62,6 +62,11 @@ namespace Chuye.Persistent.NHibernate {
         }
     }
 
+    //public struct TransactionStragety {
+    //    public TransactionDemand Demand;
+    //    public TransactionTime Time;
+    //}
+
     public enum TransactionDemand {
         Manual, Essential
     }

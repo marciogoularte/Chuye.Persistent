@@ -17,6 +17,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Chuye.Persistent", "src\Chu
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Chuye.Persistent.Repository", "src\Chuye.Persistent.Repository\Chuye.Persistent.Repository.shproj", "{8629EA2F-E686-4FDD-90A7-0BDF448533B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent.NHibernate.Test", "test\Chuye.Persistent.NHibernate.Test\Chuye.Persistent.NHibernate.Test.csproj", "{748C5E95-8489-4AA6-B345-2BD35AD450C7}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\Chuye.Persistent\Chuye.Persistent.projitems*{27693f25-7d01-4551-ade5-cb29a8423b2f}*SharedItemsImports = 4
@@ -42,6 +44,10 @@ Global
 		{27693F25-7D01-4551-ADE5-CB29A8423B2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27693F25-7D01-4551-ADE5-CB29A8423B2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27693F25-7D01-4551-ADE5-CB29A8423B2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{748C5E95-8489-4AA6-B345-2BD35AD450C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{748C5E95-8489-4AA6-B345-2BD35AD450C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{748C5E95-8489-4AA6-B345-2BD35AD450C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{748C5E95-8489-4AA6-B345-2BD35AD450C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,5 +58,6 @@ Global
 		{27693F25-7D01-4551-ADE5-CB29A8423B2F} = {F0E1C640-3BC1-4663-B513-FE2747AA9246}
 		{E0E53A62-7761-4D6D-BB5A-FCB620FB7C01} = {F0E1C640-3BC1-4663-B513-FE2747AA9246}
 		{8629EA2F-E686-4FDD-90A7-0BDF448533B7} = {F0E1C640-3BC1-4663-B513-FE2747AA9246}
+		{748C5E95-8489-4AA6-B345-2BD35AD450C7} = {50B84AC1-5389-43AD-BB18-EA4C8BF22EA2}
 	EndGlobalSection
 EndGlobal

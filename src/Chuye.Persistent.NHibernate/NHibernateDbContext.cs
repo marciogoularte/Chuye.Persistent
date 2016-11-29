@@ -21,7 +21,7 @@ namespace Chuye.Persistent.NHibernate {
         }
 
         public NHibernateDbContext() {
-            _id = Guid.NewGuid(); ;
+            _id = Guid.NewGuid(); 
             _config = NHibernateDbConfig.FromConfig("NHibernate:DbConfig");
         }
 
