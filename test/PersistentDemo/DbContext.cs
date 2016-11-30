@@ -33,8 +33,8 @@ namespace PersistentDemo {
 #endif
                    })
                 .BuildConfiguration()
-                /*.SetInterceptor(new NHibernateInterceptor())
-                .SetProperty(NHibernate.Cfg.Environment.ShowSql, Boolean.TrueString)*/;
+                /*.SetInterceptor(new NHibernateInterceptor())*/
+                .SetProperty(NHibernate.Cfg.Environment.ShowSql, Boolean.TrueString);
 
         }
     }
