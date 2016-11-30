@@ -14,7 +14,7 @@ namespace Chuye.Persistent.NHibernate {
         private readonly NHibernateDbContext _context;
         private readonly NHibernateDbConfig _config;
         private ISession _session;
-        private Boolean _suspendedTransaction;
+        private Int32 _suspendedTransaction;
 
         public Guid Id {
             get { return _id; }
@@ -30,7 +30,6 @@ namespace Chuye.Persistent.NHibernate {
 
         public NHibernateUnitOfWork(NHibernateDbContext context)
             : this(context, context.Config) {
-
         }
 
         public NHibernateUnitOfWork(NHibernateDbContext context, NHibernateDbConfig config) {
@@ -44,11 +43,8 @@ namespace Chuye.Persistent.NHibernate {
                 EnsureTransactionBegin();
             }
             else if (_config.Stragety.Require == TransactionRequire.Manual) {
-                lock (_context) {
-                    if (_suspendedTransaction) {
-                        EnsureTransactionBegin();
-                        _suspendedTransaction = false;
-                    }
+                if (Interlocked.Exchange(ref _suspendedTransaction, 0) > 0) {
+                    EnsureTransactionBegin();
                 }
             }
             return _session;
@@ -90,7 +86,7 @@ namespace Chuye.Persistent.NHibernate {
             }
             else {
                 if (_session == null) {
-                    _suspendedTransaction = true;
+                    Interlocked.Increment(ref _suspendedTransaction);
                 }
                 else {
                     EnsureTransactionBegin();
@@ -168,7 +164,7 @@ namespace Chuye.Persistent.NHibernate {
                 _session = null;
             }
         }
-        
+
         internal class NHibernateTransactionKeeper : IDisposable {
             private readonly NHibernateUnitOfWork _unitOfWork;
             public NHibernateTransactionKeeper(NHibernateUnitOfWork unitOfWork) {
