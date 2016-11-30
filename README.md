@@ -147,3 +147,5 @@
 
 [RELEASE_NOTES](/blob/master/RELEASE_NOTES.md)
 
+## About NHibernate Mappings
+[ABOUT_MAPPINGS](/blob/develop/ABOUT_MAPPINGS.md)
