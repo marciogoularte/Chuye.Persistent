@@ -23,8 +23,7 @@ namespace Chuye.Persistent.NHibernate {
             get { return _unitOfWork; }
         }
 
-        public NHibernateRepository(IUnitOfWork unitOfWork)
-            : base(unitOfWork) {
+        public NHibernateRepository(IUnitOfWork unitOfWork) {
             _unitOfWork = unitOfWork as NHibernateUnitOfWork;
             if (_unitOfWork == null) {
                 throw new ArgumentOutOfRangeException("context",
@@ -53,7 +52,7 @@ namespace Chuye.Persistent.NHibernate {
         /// <param name="field"></param>
         /// <param name="keys"></param>
         /// <returns></returns>
-        public override IEnumerable<TEntry> Retrive<TMember>(String field, params TMember[] keys) {
+        public IEnumerable<TEntry> Retrive<TMember>(String field, params TMember[] keys) {
             var session = _unitOfWork.OpenSession();
             var criteria = session.CreateCriteria<TEntry>();
             criteria.Add(Restrictions.In(field, keys));

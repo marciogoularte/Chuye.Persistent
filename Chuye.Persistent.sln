@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent", "src\Chuye.Persistent\Chuye.Persistent.csproj", "{C92A79FA-9D1E-41E0-860A-D6A1B858EFC0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent.NHibernate", "src\Chuye.Persistent.NHibernate\Chuye.Persistent.NHibernate.csproj", "{2AA2580B-69F5-4537-9AB2-9A426092AE76}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistentDemo", "test\PersistentDemo\PersistentDemo.csproj", "{FF411F48-DD5E-4891-ADD3-76B9C48C2F2D}"
@@ -15,20 +13,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{50B84AC1-5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent.PetaPoco", "src\Chuye.Persistent.PetaPoco\Chuye.Persistent.PetaPoco.csproj", "{27693F25-7D01-4551-ADE5-CB29A8423B2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent.Repository", "src\Chuye.Persistent.Repository\Chuye.Persistent.Repository.csproj", "{C16886A6-4BD1-44B5-9D88-1DF825DBA639}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Chuye.Persistent", "src\Chuye.Persistent\Chuye.Persistent.shproj", "{E0E53A62-7761-4D6D-BB5A-FCB620FB7C01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent.Dapper", "src\Chuye.Persistent.Dapper\Chuye.Persistent.Dapper.csproj", "{08482B5D-A549-476E-ACCC-A9BDCB9EFAC4}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Chuye.Persistent.Repository", "src\Chuye.Persistent.Repository\Chuye.Persistent.Repository.shproj", "{8629EA2F-E686-4FDD-90A7-0BDF448533B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuye.Persistent.NHibernate.Test", "test\Chuye.Persistent.NHibernate.Test\Chuye.Persistent.NHibernate.Test.csproj", "{748C5E95-8489-4AA6-B345-2BD35AD450C7}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Chuye.Persistent\Chuye.Persistent.projitems*{27693f25-7d01-4551-ade5-cb29a8423b2f}*SharedItemsImports = 4
+		src\Chuye.Persistent.Repository\Chuye.Persistent.Repository.projitems*{2aa2580b-69f5-4537-9ab2-9a426092ae76}*SharedItemsImports = 4
+		src\Chuye.Persistent\Chuye.Persistent.projitems*{2aa2580b-69f5-4537-9ab2-9a426092ae76}*SharedItemsImports = 4
+		src\Chuye.Persistent.Repository\Chuye.Persistent.Repository.projitems*{8629ea2f-e686-4fdd-90a7-0bdf448533b7}*SharedItemsImports = 13
+		src\Chuye.Persistent\Chuye.Persistent.projitems*{e0e53a62-7761-4d6d-bb5a-fcb620fb7c01}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C92A79FA-9D1E-41E0-860A-D6A1B858EFC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C92A79FA-9D1E-41E0-860A-D6A1B858EFC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C92A79FA-9D1E-41E0-860A-D6A1B858EFC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C92A79FA-9D1E-41E0-860A-D6A1B858EFC0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2AA2580B-69F5-4537-9AB2-9A426092AE76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2AA2580B-69F5-4537-9AB2-9A426092AE76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AA2580B-69F5-4537-9AB2-9A426092AE76}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,24 +44,20 @@ Global
 		{27693F25-7D01-4551-ADE5-CB29A8423B2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27693F25-7D01-4551-ADE5-CB29A8423B2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27693F25-7D01-4551-ADE5-CB29A8423B2F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C16886A6-4BD1-44B5-9D88-1DF825DBA639}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C16886A6-4BD1-44B5-9D88-1DF825DBA639}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C16886A6-4BD1-44B5-9D88-1DF825DBA639}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C16886A6-4BD1-44B5-9D88-1DF825DBA639}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08482B5D-A549-476E-ACCC-A9BDCB9EFAC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08482B5D-A549-476E-ACCC-A9BDCB9EFAC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08482B5D-A549-476E-ACCC-A9BDCB9EFAC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08482B5D-A549-476E-ACCC-A9BDCB9EFAC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{748C5E95-8489-4AA6-B345-2BD35AD450C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{748C5E95-8489-4AA6-B345-2BD35AD450C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{748C5E95-8489-4AA6-B345-2BD35AD450C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{748C5E95-8489-4AA6-B345-2BD35AD450C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C92A79FA-9D1E-41E0-860A-D6A1B858EFC0} = {F0E1C640-3BC1-4663-B513-FE2747AA9246}
 		{2AA2580B-69F5-4537-9AB2-9A426092AE76} = {F0E1C640-3BC1-4663-B513-FE2747AA9246}
 		{FF411F48-DD5E-4891-ADD3-76B9C48C2F2D} = {50B84AC1-5389-43AD-BB18-EA4C8BF22EA2}
 		{27693F25-7D01-4551-ADE5-CB29A8423B2F} = {F0E1C640-3BC1-4663-B513-FE2747AA9246}
-		{C16886A6-4BD1-44B5-9D88-1DF825DBA639} = {F0E1C640-3BC1-4663-B513-FE2747AA9246}
-		{08482B5D-A549-476E-ACCC-A9BDCB9EFAC4} = {F0E1C640-3BC1-4663-B513-FE2747AA9246}
+		{E0E53A62-7761-4D6D-BB5A-FCB620FB7C01} = {F0E1C640-3BC1-4663-B513-FE2747AA9246}
+		{8629EA2F-E686-4FDD-90A7-0BDF448533B7} = {F0E1C640-3BC1-4663-B513-FE2747AA9246}
+		{748C5E95-8489-4AA6-B345-2BD35AD450C7} = {50B84AC1-5389-43AD-BB18-EA4C8BF22EA2}
 	EndGlobalSection
 EndGlobal
