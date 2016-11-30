@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using FluentNHibernate.Mapping;
 
 namespace PersistentDemo.Models {
-    class Drawer {
+    public class Drawer {
         public virtual Int32 Id { get; set; }
         public virtual String Name { get; set; }
         public virtual Desktop Desktop { get; set; }
     }
 
-    class Desktop {
+    public class Desktop {
         public virtual Int32 Id { get; set; }
         public virtual String Title { get; set; }
         public virtual IList<Drawer> Drawers { get; set; }
@@ -27,6 +27,7 @@ namespace PersistentDemo.Models {
             Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Name);
             References(x => x.Desktop, "DesktopId")
+                .LazyLoad(Laziness.NoProxy)
                 .NotFound.Ignore();
         }
     }

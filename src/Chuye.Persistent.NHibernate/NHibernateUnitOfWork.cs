@@ -171,12 +171,12 @@ namespace Chuye.Persistent.NHibernate {
             }
 
             public void Dispose() {
-                if (_unitOfWork._config.SaveUncommitted) {
+                //if (_unitOfWork._config.SaveUncommitted) {
                     _unitOfWork.Commit();
-                }
-                else {
-                    _unitOfWork.Rollback();
-                }
+                //}
+                //else {
+                //    _unitOfWork.Rollback();
+                //}
             }
         }
     }
