@@ -28,13 +28,13 @@ namespace PersistentDemo {
                    .ExposeConfiguration(conf => {
 #if DEBUG
                        if (Boolean.TrueString.Equals(ConfigurationManager.AppSettings.Get("NHibernate:recreate"), StringComparison.OrdinalIgnoreCase)) {
-                           new SchemaExport(conf).Create(false, false);
+                           //new SchemaExport(conf).Create(true, true);
                        }
 #endif
                    })
                 .BuildConfiguration()
-                //.SetInterceptor(new NHibernateInterceptor())
-                .SetProperty(NHibernate.Cfg.Environment.ShowSql, Boolean.TrueString);
+                /*.SetInterceptor(new NHibernateInterceptor())
+                .SetProperty(NHibernate.Cfg.Environment.ShowSql, Boolean.TrueString)*/;
 
         }
     }

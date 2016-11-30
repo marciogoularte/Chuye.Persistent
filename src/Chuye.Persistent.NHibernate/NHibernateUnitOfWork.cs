@@ -153,7 +153,6 @@ namespace Chuye.Persistent.NHibernate {
                 }
                 else {
                     EnsureTransactionRollback();
-
                 }
             }
             finally {
