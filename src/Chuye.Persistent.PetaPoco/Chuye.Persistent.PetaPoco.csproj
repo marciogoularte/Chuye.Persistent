@@ -42,10 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeferredPage`.cs" />
+    <Compile Include="InterceptedDatabase.cs" />
     <Compile Include="PagedSql.cs" />
     <Compile Include="DatabaseExtension.cs" />
     <Compile Include="PetaPoco.cs" />
-    <Compile Include="PetaPocoDbContext.cs" />
     <Compile Include="PetaPocoUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

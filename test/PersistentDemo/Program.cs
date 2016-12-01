@@ -8,18 +8,32 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate.Linq;
 using System.Linq;
+using Chuye.Persistent.PetaPoco;
+using PetaPoco;
 
 namespace PersistentDemo {
     class Program {
         static ILogger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args) {
-            //Debug.Listeners.Clear();
             Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
 
-            ReferenceMapSaveTest();
+            PetaPocoTransTest();
         }
 
-        private static void ReferenceMapSaveTest() {
+        static void PetaPocoTransTest() {
+            var context = new PetaPocoUnitOfWork("test");
+            //using (context) {
+                context.Begin();
+                //context.Begin().Dispose();
+                //context.Begin();
+                //context.Commit();
+                //context.Begin();
+                //context.Rollback();
+                //context.Commit();
+            //}
+        }
+
+        static void ReferenceLoadTest() {
             var config = new NHibernateDbConfig {
                 Stragety = new TransactionStragety {
                     Require = TransactionRequire.Manual,
@@ -56,21 +70,6 @@ namespace PersistentDemo {
                 }
             }
             Console.WriteLine();
-
-            /*Console.WriteLine("{0:HH:mm:ss.fff} Get reference without trans", DateTime.Now);
-            using (var uow = new NHibernateUnitOfWork(context, config)) {
-                var session = uow.OpenSession();
-                var desktop = session.Get<Drawer>(100);
-            }
-            Console.WriteLine();
-
-            Console.WriteLine("{0:HH:mm:ss.fff} Get reference with trans commmit", DateTime.Now);
-            using (var uow = new NHibernateUnitOfWork(context, config))
-            using (uow.Begin()) {
-                var session = uow.OpenSession();
-                var desktop = session.Get<Drawer>(100);
-            }
-            Console.WriteLine();*/
 
             /*The N+1 Problem under Transaction*/
             Console.WriteLine("{0:HH:mm:ss.fff} Query lists", DateTime.Now);
