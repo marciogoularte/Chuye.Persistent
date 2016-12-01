@@ -43,12 +43,12 @@ namespace Chuye.Persistent.PetaPoco {
         }
 
         public override void OnExecutingCommand(IDbCommand cmd) {
-            Debug.WriteLine("(PC:OnExecuting, sql {1})", args: cmd.CommandText);
+            Debug.WriteLine("(PC:OnExecuting, sql {0})", args: cmd.CommandText);
             base.OnExecutingCommand(cmd);
         }
 
         public override bool OnException(Exception ex) {
-            Debug.WriteLine("{(PC:OnException, ex {1})", args: ex.Message);
+            Debug.WriteLine("(PC:OnException, ex {0})", args: ex.Message);
             _lastErrorOverTransaction = ex;
             return base.OnException(ex);
         }

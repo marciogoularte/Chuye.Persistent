@@ -16,20 +16,29 @@ namespace PersistentDemo {
         static ILogger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args) {
             Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
+            HybridTransTest();
+        }
 
-            PetaPocoTransTest();
+        static void HybridTransTest() {
+            var context1 = new DbContext();
+            using (var uow1 = new NHibernateUnitOfWork(context1)) {
+                using (uow1.Begin()) {
+                    var uow2 = new PetaPocoUnitOfWork(uow1.OpenSession().Connection);
+                    uow2.Database.Execute("update Desktop set DrawerId = 100 where Id = 9");
+                }
+            }
         }
 
         static void PetaPocoTransTest() {
             var context = new PetaPocoUnitOfWork("test");
             //using (context) {
-                context.Begin();
-                //context.Begin().Dispose();
-                //context.Begin();
-                //context.Commit();
-                //context.Begin();
-                //context.Rollback();
-                //context.Commit();
+            context.Begin();
+            //context.Begin().Dispose();
+            //context.Begin();
+            //context.Commit();
+            //context.Begin();
+            //context.Rollback();
+            //context.Commit();
             //}
         }
 

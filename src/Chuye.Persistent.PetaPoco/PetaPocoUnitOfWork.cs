@@ -39,6 +39,7 @@ namespace Chuye.Persistent.PetaPoco {
             if (database is null) {
                 throw new ArgumentNullException("database");
             }
+            Debug.WriteLine("(PC:Database ctor)");
             _database = database;
         }
 
@@ -60,8 +61,8 @@ namespace Chuye.Persistent.PetaPoco {
             }
 
             try {
-                _database.CompleteTransaction();
                 Debug.WriteLine("(PC:Transaction commit)");
+                _database.CompleteTransaction();
             }
             catch (DbException) {
                 Debug.WriteLine("(PC:Transaction rollback)");

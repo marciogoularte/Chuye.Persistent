@@ -40,7 +40,7 @@ namespace Chuye.Persistent.NHibernate {
             var time = Default.Stragety.Time;
             Enum.TryParse(values[1], true, out time);
 
-            var saveUncommitted = values.Length >= 2
+            var saveUncommitted = values.Length > 2
                 && values[2].Equals("SaveUncommitted", StringComparison.OrdinalIgnoreCase);
             return new NHibernateDbConfig {
                 Stragety = new TransactionStragety {
