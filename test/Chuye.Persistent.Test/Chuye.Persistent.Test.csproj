@@ -77,7 +77,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="NHibernateDbConfigTest.cs" />
+    <Compile Include="NHibernate\NHibernateDbConfigTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +88,10 @@
     <ProjectReference Include="..\..\src\Chuye.Persistent.NHibernate\Chuye.Persistent.NHibernate.csproj">
       <Project>{2AA2580B-69F5-4537-9AB2-9A426092AE76}</Project>
       <Name>Chuye.Persistent.NHibernate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Chuye.Persistent\Chuye.Persistent.csproj">
+      <Project>{b63c5759-3685-4a8a-8dcc-37ec6c5d3a2a}</Project>
+      <Name>Chuye.Persistent</Name>
     </ProjectReference>
     <ProjectReference Include="..\PersistentDemo\PersistentDemo.csproj">
       <Project>{ff411f48-dd5e-4891-add3-76b9c48c2f2d}</Project>
