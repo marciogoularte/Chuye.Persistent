@@ -14,6 +14,6 @@ namespace Chuye.Persistent.Repository {
         IQueryable<TResult> All { get; }
         TResult Retrive(Object id);
         IEnumerable<TResult> Retrive(Object[] keys);
-        IEnumerable<TResult> Retrive<TKey>(String field, params TKey[] keys);
+        //IEnumerable<TResult> Retrive<TKey>(String field, params TKey[] keys);
     }
 }

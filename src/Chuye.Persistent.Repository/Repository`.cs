@@ -7,16 +7,11 @@ using System.Threading.Tasks;
 
 namespace Chuye.Persistent.Repository {
     public abstract class Repository<TEntry> : IRepository<TEntry> {
-        private readonly IUnitOfWork _unitOfWork;
-        public Repository(IUnitOfWork unitOfWork) {
-            _unitOfWork = unitOfWork;
-        }
-
         public abstract IQueryable<TEntry> All { get; }
         public abstract Boolean Any(params Expression<Func<TEntry, Boolean>>[] predicates);
         public abstract TEntry Retrive(Object id);
         public abstract IEnumerable<TEntry> Retrive(Object[] keys);
-        public abstract IEnumerable<TEntry> Retrive<TMember>(String field, params TMember[] keys);
+        //public abstract IEnumerable<TEntry> Retrive<TMember>(String field, params TMember[] keys);
         public abstract IEnumerable<TEntry> Retrive<TMember>(Expression<Func<TEntry, TMember>> selector, params TMember[] keys);
 
         public abstract void Create(TEntry entry);
