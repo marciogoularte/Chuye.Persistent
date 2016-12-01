@@ -6,6 +6,8 @@ using PersistentDemo.Models;
 using System.Configuration;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using NHibernate.Linq;
+using System.Linq;
 
 namespace PersistentDemo {
     class Program {
@@ -34,49 +36,50 @@ namespace PersistentDemo {
                     .BuildConfiguration()
                     .SetProperty(NHibernate.Cfg.Environment.ShowSql, Boolean.TrueString));
 
-            Console.WriteLine("{0} Prepare data", DateTime.Now);
+            Console.WriteLine("{0:HH:mm:ss.fff} Prepare data", DateTime.Now);
             using (var uow = new NHibernateUnitOfWork(context))
             using (uow.Begin()) {
                 var session = uow.OpenSession();
                 session.CreateSQLQuery("Delete from Drawer").ExecuteUpdate();
                 session.CreateSQLQuery("Delete from Desktop").ExecuteUpdate();
 
-                var desktop = new Desktop {
-                    Id = 100,
-                };
-                session.Save(desktop);
+                for (int i = 0; i < 100; i++) {
+                    var desktop = new Desktop {
+                        Id = i,
+                    };
+                    session.Save(desktop);
 
-                session.Save(new Drawer {
-                    Id = 100,
-                    Desktop = desktop,
-                });
-                session.Save(new Drawer {
-                    Id = 101,
-                    Desktop = desktop,
-                });
-                session.Save(new Drawer {
-                    Id = 102,
-                    Desktop = desktop,
-                });
+                    session.Save(new Drawer {
+                        Id = 10000 + i,
+                        Desktop = desktop,
+                    });
+                }
             }
             Console.WriteLine();
 
-            //using (var uow = new NHibernateUnitOfWork(context, config)) {
-            //    var session = uow.OpenSession();
-            //    var desktop = session.Get<Desktop>(100);
-            //}
-            Console.WriteLine("{0} Get reference without trans", DateTime.Now);
+            /*Console.WriteLine("{0:HH:mm:ss.fff} Get reference without trans", DateTime.Now);
             using (var uow = new NHibernateUnitOfWork(context, config)) {
                 var session = uow.OpenSession();
                 var desktop = session.Get<Drawer>(100);
             }
             Console.WriteLine();
 
-            Console.WriteLine("{0} Get reference with trans commmit", DateTime.Now);
+            Console.WriteLine("{0:HH:mm:ss.fff} Get reference with trans commmit", DateTime.Now);
             using (var uow = new NHibernateUnitOfWork(context, config))
             using (uow.Begin()) {
                 var session = uow.OpenSession();
                 var desktop = session.Get<Drawer>(100);
+            }
+            Console.WriteLine();*/
+
+            /*The N+1 Problem under Transaction*/
+            Console.WriteLine("{0:HH:mm:ss.fff} Query lists", DateTime.Now);
+            using (var uow = new NHibernateUnitOfWork(context, config))
+            /*using (uow.Begin())*/ {
+                var session = uow.OpenSession();
+                var drawers = session.Query<Drawer>().ToList();
+                //Console.WriteLine("{0:HH:mm:ss.fff} Access props", DateTime.Now);
+                //drawers.Select(x => x.Desktop.Id).ToArray();
             }
             Console.WriteLine();
         }
