@@ -3,6 +3,9 @@ using System.Diagnostics;
 using NLog;
 using Chuye.Persistent.NHibernate;
 using PersistentDemo.Models;
+using System.Configuration;
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 
 namespace PersistentDemo {
     class Program {
@@ -23,10 +26,16 @@ namespace PersistentDemo {
                 SaveUncommitted = false
             };
 
-            var context = new DbContext();
+            //var context = new DbContext();
+            var context = new NHibernateDbContext(config).Setup(() =>
+                Fluently.Configure()
+                    .Database(MySQLConfiguration.Standard.ConnectionString(ConfigurationManager.ConnectionStrings["test"].ConnectionString))
+                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<DbContext>())
+                    .BuildConfiguration()
+                    .SetProperty(NHibernate.Cfg.Environment.ShowSql, Boolean.TrueString));
 
-            Console.WriteLine("Prepare data");
-            using (var uow = new NHibernateUnitOfWork(context, config))
+            Console.WriteLine("{0} Prepare data", DateTime.Now);
+            using (var uow = new NHibernateUnitOfWork(context))
             using (uow.Begin()) {
                 var session = uow.OpenSession();
                 session.CreateSQLQuery("Delete from Drawer").ExecuteUpdate();
@@ -56,19 +65,20 @@ namespace PersistentDemo {
             //    var session = uow.OpenSession();
             //    var desktop = session.Get<Desktop>(100);
             //}
-            Console.WriteLine("Get reference without trans");
+            Console.WriteLine("{0} Get reference without trans", DateTime.Now);
             using (var uow = new NHibernateUnitOfWork(context, config)) {
                 var session = uow.OpenSession();
                 var desktop = session.Get<Drawer>(100);
             }
             Console.WriteLine();
 
-            Console.WriteLine("Get reference with trans commmit");
+            Console.WriteLine("{0} Get reference with trans commmit", DateTime.Now);
             using (var uow = new NHibernateUnitOfWork(context, config))
             using (uow.Begin()) {
                 var session = uow.OpenSession();
                 var desktop = session.Get<Drawer>(100);
             }
+            Console.WriteLine();
         }
 
         static void TransactionStragetyTest() {

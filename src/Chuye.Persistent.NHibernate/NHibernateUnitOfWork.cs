@@ -29,7 +29,7 @@ namespace Chuye.Persistent.NHibernate {
         }
 
         public NHibernateUnitOfWork(NHibernateDbContext context)
-            : this(context, context.Config) {
+            : this(context, context.DbConfig) {
         }
 
         public NHibernateUnitOfWork(NHibernateDbContext context, NHibernateDbConfig config) {
@@ -119,21 +119,21 @@ namespace Chuye.Persistent.NHibernate {
         private void EnsureTransactionCommit() {
             try {
                 if (_session.Transaction.IsActive) {
-                    Debug.WriteLine("(NH:Transaction commit)");
                     _session.Transaction.Commit();
+                    Debug.WriteLine("(NH:Transaction commit)");
                 }
             }
             catch {
                 if (_session.Transaction.IsActive) {
-                    Debug.WriteLine("(NH:Transaction rollback)");
                     _session.Transaction.Rollback();
+                    Debug.WriteLine("(NH:Transaction rollback)");
                 }
                 throw;
             }
             finally {
                 if (_session.Transaction.IsActive) {
-                    Debug.WriteLine("(NH:Transaction dispose)");
                     _session.Transaction.Dispose();
+                    Debug.WriteLine("(NH:Transaction dispose)");
                 }
             }
         }
@@ -156,7 +156,7 @@ namespace Chuye.Persistent.NHibernate {
                 }
             }
             finally {
-                Debug.WriteLine("(NH:Session dispose, left {0})",
+                Debug.WriteLine("(NH:Session dispose, count {0})",
                     Interlocked.Decrement(ref _count));
                 _session.Close();
                 _session.Dispose();

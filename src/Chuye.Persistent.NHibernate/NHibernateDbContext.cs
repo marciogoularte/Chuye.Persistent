@@ -3,34 +3,51 @@ using NHibernate;
 using NHibernate.Cfg;
 
 namespace Chuye.Persistent.NHibernate {
-    public abstract class NHibernateDbContext : IDisposable {
+    public class NHibernateDbContext : IDisposable {
         private readonly Guid _id;
-        private NHibernateDbConfig _config;
-        private ISessionFactory _sessionFactory;
+        private readonly NHibernateDbConfig _dbConfig;
+        private Lazy<ISessionFactory> _sessionFactory;
 
         public Guid Id {
             get { return _id; }
         }
 
-        internal NHibernateDbConfig Config {
-            get { return _config; }
+        internal NHibernateDbConfig DbConfig {
+            get { return _dbConfig; }
         }
 
         internal ISessionFactory SessionFactory {
-            get { return _sessionFactory; }
+            get {
+                if (_sessionFactory == null) {
+                    throw new InvalidProgramException();
+                }
+                return _sessionFactory.Value;
+            }
         }
 
-        public NHibernateDbContext() {
-            _id = Guid.NewGuid(); 
-            _config = NHibernateDbConfig.FromConfig("NHibernate:DbConfig");
+        public NHibernateDbContext()
+            : this(NHibernateDbConfig.FromConfig("NHibernate:DbConfig")) {
         }
 
-        protected void SetupConfiguration(Func<Configuration> func) {
-            _sessionFactory = func().BuildSessionFactory();
+        public NHibernateDbContext(NHibernateDbConfig dbConfig) {
+            _id = Guid.NewGuid();
+            _dbConfig = dbConfig;
+        }
+
+        public NHibernateDbContext Setup(Func<Configuration> configFunc) {
+            TryReleaseSessionFactory();
+            _sessionFactory = new Lazy<ISessionFactory>(configFunc().BuildSessionFactory);
+            return this;
+        }
+
+        private void TryReleaseSessionFactory() {
+            if (_sessionFactory != null && _sessionFactory.IsValueCreated) {
+                _sessionFactory.Value.Dispose();
+            }
         }
 
         public void Dispose() {
-            _sessionFactory.Dispose();
+            TryReleaseSessionFactory();
         }
     }
 }
