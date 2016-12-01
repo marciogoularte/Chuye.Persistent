@@ -6,6 +6,8 @@
 
 :build
 msbuild "%local%\Chuye.Persistent.sln" /t:Rebuild /P:Configuration=Release
+rem msbuild "%local%src\Chuye.Persistent.NHibernate\Chuye.Persistent.NHibernate.csproj" /t:Rebuild /P:Configuration=Release
+rem msbuild "%local%src\Chuye.Persistent.PetaPoco\Chuye.Persistent.PetaPoco.csproj" /t:Rebuild /P:Configuration=Release
 @goto copy
 
 :copy

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using PetaPoco;
 
 namespace Chuye.Persistent.PetaPoco {
@@ -36,9 +32,6 @@ namespace Chuye.Persistent.PetaPoco {
         }
 
         internal PetaPocoUnitOfWork(InterceptedDatabase database) {
-            if (database is null) {
-                throw new ArgumentNullException("database");
-            }
             Debug.WriteLine("(PC:Database ctor)");
             _database = database;
         }
