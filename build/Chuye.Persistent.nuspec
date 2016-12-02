@@ -2,8 +2,8 @@
 <package >
   <metadata>
     <id>Chuye.Persistent</id>
-    <version>2.6.4</version>
-    <title>Chuye.Persistent.PetaPoco</title>
+    <version>2.6.4.1</version>
+    <title>Chuye.Persistent</title>
     <authors>jusfrw</authors>
     <owners>jusfrw</owners>
     <licenseUrl>http://https://github.com/jusfr/Chuye.Persistent/blob/release/LICENSE</licenseUrl>

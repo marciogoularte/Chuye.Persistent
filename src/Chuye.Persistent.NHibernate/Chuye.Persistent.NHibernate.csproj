@@ -56,6 +56,7 @@
     <Compile Include="NHibernateInterceptor.cs" />
     <Compile Include="NHibernateUnitOfWork.cs" />
     <Compile Include="NHibernateRepository`.cs" />
+    <Compile Include="PetaPoco\HybridPetaPocoUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
