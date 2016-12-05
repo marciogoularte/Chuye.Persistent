@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chuye.Persistent.Repository {
-    public interface IRepository<TEntry> : IRepository<TEntry, TEntry> {
+namespace Chuye.Persistent.NHibernate {
+    public interface NHibernateIRepository<TEntry> : INHibernateIRepository<TEntry, TEntry> {
 
     }
 }
