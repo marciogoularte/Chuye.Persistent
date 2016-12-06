@@ -15,10 +15,10 @@ namespace PersistentDemo.Models {
     public class Desktop {
         public virtual Int32 Id { get; set; }
         public virtual String Title { get; set; }
-        public virtual ISet<Drawer> Drawers { get; set; }
+        public virtual IList<Drawer> Drawers { get; set; }
 
         public Desktop() {
-            Drawers = new HashSet<Drawer>();
+            Drawers = new List<Drawer>();
         }
     }
 

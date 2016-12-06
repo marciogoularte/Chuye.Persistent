@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="ExpressionBuilder.cs" />
     <Compile Include="INHibernateIRepository.cs" />
-    <Compile Include="NHibernateIRepository`.cs" />
+    <Compile Include="INHibernateRepository`.cs" />
     <Compile Include="NHibernateDbConfig.cs" />
     <Compile Include="NHibernateDbContext.cs" />
     <Compile Include="NHibernateInterceptor.cs" />

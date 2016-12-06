@@ -1,22 +1,65 @@
 ﻿using System;
-using System.Diagnostics;
-using NLog;
-using Chuye.Persistent.NHibernate;
-using PersistentDemo.Models;
 using System.Configuration;
-using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
-using NHibernate.Linq;
+using System.Diagnostics;
 using System.Linq;
+using Chuye.Persistent.NHibernate;
 using Chuye.Persistent.PetaPoco;
-using PetaPoco;
+using NHibernate.Linq;
+using NLog;
+using PersistentDemo.Models;
 
 namespace PersistentDemo {
     class Program {
         static ILogger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args) {
             Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
-            HybridTransTest();
+            RepositoryTest();
+
+            if (Debugger.IsAttached) {
+                Console.WriteLine("Press <ENTER> to exit");
+                Console.ReadLine();
+            }
+        }
+
+        static void RepositoryTest() {
+            var context = new DbContext();
+            using (var uow = new NHibernateUnitOfWork(context))
+            using (uow.Begin()) {
+                var repo = new NHibernateRepository<Desktop>(uow);
+                var desktop = new Desktop {
+                    Id = 10,
+                    Title = "title#1"
+                };
+                desktop.Drawers.Add(new Drawer {
+                    Id = 100,
+                    Name = "name#1",
+                    Desktop = desktop,
+                });
+                desktop.Drawers.Add(new Drawer {
+                    Id = 101,
+                    Name = "name#2",
+                    Desktop = desktop,
+                });
+                repo.Save(desktop);
+            }
+
+            using (var uow = new NHibernateUnitOfWork(context, new NHibernateDbConfig { SaveUncommitted = true }))
+            /*using (uow.Begin()) */{
+                var repo1 = new NHibernateRepository<Drawer>(uow);
+                repo1.Save(new Drawer {
+                    Id = 200,
+                    Name = "name#3",
+                });
+
+                var drawers = repo1.FindByKeys(100, 101).ToArray();
+                repo1.Delete(drawers[0]);
+
+                var repo2 = new NHibernateRepository<Desktop>(uow);
+                var desktop = repo2.FindById(10);
+                desktop.Title = "title#1 modified";
+                repo2.Save(desktop);
+
+            }
         }
 
         static void HybridTransTest() {
@@ -51,14 +94,7 @@ namespace PersistentDemo {
                 SaveUncommitted = false
             };
 
-            //var context = new DbContext();
-            var context = new NHibernateDbContext(config).Setup(() =>
-                Fluently.Configure()
-                    .Database(MySQLConfiguration.Standard.ConnectionString(ConfigurationManager.ConnectionStrings["test"].ConnectionString))
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<DbContext>())
-                    .BuildConfiguration()
-                    .SetProperty(NHibernate.Cfg.Environment.ShowSql, Boolean.TrueString));
-
+            var context = new DbContext();
             Console.WriteLine("{0:HH:mm:ss.fff} Prepare data", DateTime.Now);
             using (var uow = new NHibernateUnitOfWork(context))
             using (uow.Begin()) {
