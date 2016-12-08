@@ -28,7 +28,8 @@ namespace PersistentDemo {
                 var repo = new NHibernateRepository<Desktop>(uow);
                 var desktop = new Desktop {
                     Id = 10,
-                    Title = "title#1"
+                    Title = "title#1",
+                    Status = GeneralType.Classified,
                 };
                 desktop.Drawers.Add(new Drawer {
                     Id = 100,
@@ -57,6 +58,7 @@ namespace PersistentDemo {
                 var repo2 = new NHibernateRepository<Desktop>(uow);
                 var desktop = repo2.FindById(10);
                 desktop.Title = "title#1 modified";
+                desktop.Status = GeneralType.Specific;
                 repo2.Save(desktop);
 
             }
