@@ -8,7 +8,7 @@ using NHibernate.Criterion;
 using NHibernate.Linq;
 
 namespace Chuye.Persistent.NHibernate {
-    public class NHibernateRepository<TEntry> : NHibernateIRepository<TEntry> where TEntry : class {
+    public class NHibernateRepository<TEntry> : INHibernateRepository<TEntry> where TEntry : class {
         private readonly NHibernateUnitOfWork _unitOfWork = null;
 
         public virtual IQueryable<TEntry> All {

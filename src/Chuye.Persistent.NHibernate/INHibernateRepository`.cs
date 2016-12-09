@@ -5,7 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Chuye.Persistent.NHibernate {
-    public interface NHibernateIRepository<TEntry> : INHibernateIRepository<TEntry, TEntry> {
+    public interface INHibernateRepository<in TEntry, out TResult> {
+        void Delete(TEntry entry);
+        void Save(TEntry entry);
 
+        IQueryable<TResult> All { get; }
+        TResult FindById(Object id);
+        IEnumerable<TResult> FindByKeys(Object[] keys);
     }
 }

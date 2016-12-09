@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExpressionBuilder.cs" />
-    <Compile Include="INHibernateIRepository.cs" />
+    <Compile Include="INHibernateRepository.cs" />
     <Compile Include="INHibernateRepository`.cs" />
     <Compile Include="NHibernateDbConfig.cs" />
     <Compile Include="NHibernateDbContext.cs" />
