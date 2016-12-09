@@ -53,6 +53,7 @@
     <Compile Include="ExpressionBuilder.cs" />
     <Compile Include="INHibernateRepository.cs" />
     <Compile Include="INHibernateRepository`.cs" />
+    <Compile Include="NHibernateAggregateLocate.cs" />
     <Compile Include="NHibernateDbConfig.cs" />
     <Compile Include="NHibernateDbContext.cs" />
     <Compile Include="NHibernateInterceptor.cs" />

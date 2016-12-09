@@ -41,12 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAggregateLocate.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="PetaPoco\DatabaseExtension.cs" />
     <Compile Include="PetaPoco\DeferredPage`.cs" />
     <Compile Include="PetaPoco\InterceptedDatabase.cs" />
     <Compile Include="PetaPoco\PagedSql.cs" />
     <Compile Include="PetaPoco\PetaPoco.cs" />
+    <Compile Include="PetaPoco\PetaPocoAggregateLocate.cs" />
     <Compile Include="PetaPoco\PetaPocoUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

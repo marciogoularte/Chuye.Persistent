@@ -13,11 +13,46 @@ namespace PersistentDemo {
         static ILogger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args) {
             Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
-            RepositoryTest();
+            AggregateLocateTest();
 
             if (Debugger.IsAttached) {
                 Console.WriteLine("Press <ENTER> to exit");
                 Console.ReadLine();
+            }
+        }
+
+        static void AggregateLocateTest() {
+            var context = new DbContext();
+            using (var uow = new NHibernateUnitOfWork(context))
+            using (uow.Begin()) {
+                var aggregateLocate = new NHibernateAggregateLocate(uow);
+                var desktop = new Desktop {
+                    Id = 10,
+                    Title = "title#1",
+                    Status = GeneralType.Classified,
+                };
+                desktop.Drawers.Add(new Drawer {
+                    Id = 100,
+                    Name = "name#1",
+                    Desktop = desktop,
+                });
+                desktop.Drawers.Add(new Drawer {
+                    Id = 101,
+                    Name = "name#2",
+                    Desktop = desktop,
+                });
+                aggregateLocate.Save(desktop);
+            }
+
+            using (var uow = new NHibernateUnitOfWork(context))
+            using (uow.Begin()) {
+                var aggregateLocate = new NHibernateAggregateLocate(uow);
+                var entry1 = aggregateLocate.FindById<Desktop>(10);
+                entry1.Title = "Title#modified";
+                aggregateLocate.Save(entry1);
+
+                var entry2 = aggregateLocate.FindById<Drawer>(100);
+                aggregateLocate.Delete(entry2);
             }
         }
 
