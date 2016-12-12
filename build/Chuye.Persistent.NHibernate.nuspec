@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>Chuye.Persistent.NHibernate</id>
-    <version>2.6.3</version>
+    <version>2.6.5</version>
     <title>Chuye.Persistent.NHibernate</title>
     <authors>jusfrw</authors>
     <owners>jusfrw</owners>
     <licenseUrl>http://https://github.com/jusfr/Chuye.Persistent/blob/release/LICENSE</licenseUrl>
     <projectUrl>https://github.com/jusfr/Chuye.Persistent</projectUrl>
-    <iconUrl>http://static01.cloud7.com.cn/assets/7a63d1b9/content/image/chuye-site/logo.png</iconUrl>
+    <iconUrl>http://chuye.gitlab.com/uploads/group/avatar/20/484f22e04dd96092db1c43b38e3a85e1.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Repository implement for RDBS using NHibernate</description>
     <releaseNotes>This is a initial release.</releaseNotes>
@@ -19,6 +19,7 @@
     </dependencies>
   </metadata>
   <files>
+    <file src="..\release\Chuye.Persistent.NHibernate\Chuye.Persistent.dll" target="lib\net452" />
     <file src="..\release\Chuye.Persistent.NHibernate\Chuye.Persistent.NHibernate.dll" target="lib\net452" />
   </files>
 </package>

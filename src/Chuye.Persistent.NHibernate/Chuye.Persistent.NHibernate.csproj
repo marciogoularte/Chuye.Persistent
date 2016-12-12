@@ -51,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExpressionBuilder.cs" />
+    <Compile Include="INHibernateRepository.cs" />
+    <Compile Include="INHibernateRepository`.cs" />
+    <Compile Include="NHibernateAggregateRoot.cs" />
     <Compile Include="NHibernateDbConfig.cs" />
     <Compile Include="NHibernateDbContext.cs" />
     <Compile Include="NHibernateInterceptor.cs" />
@@ -61,8 +64,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="..\Chuye.Persistent\Chuye.Persistent.projitems" Label="Shared" />
-  <Import Project="..\Chuye.Persistent.Repository\Chuye.Persistent.Repository.projitems" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\Chuye.Persistent\Chuye.Persistent.csproj">
+      <Project>{b63c5759-3685-4a8a-8dcc-37ec6c5d3a2a}</Project>
+      <Name>Chuye.Persistent</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

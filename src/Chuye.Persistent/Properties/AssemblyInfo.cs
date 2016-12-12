@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Chuye.Persistent.PetaPoco")]
+[assembly: AssemblyTitle("Chuye.Persistent")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Chuye.Persistent.PetaPoco")]
+[assembly: AssemblyProduct("Chuye.Persistent")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("27693f25-7d01-4551-ade5-cb29a8423b2f")]
+[assembly: Guid("b63c5759-3685-4a8a-8dcc-37ec6c5d3a2a")]
 
 // Version information for an assembly consists of the following four values:
 //

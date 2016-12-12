@@ -16,7 +16,7 @@ namespace Chuye.Persistent.NHibernate {
             get { return _dbConfig; }
         }
 
-        internal ISessionFactory SessionFactory {
+        public ISessionFactory SessionFactory {
             get {
                 if (_sessionFactory == null) {
                     throw new InvalidProgramException();

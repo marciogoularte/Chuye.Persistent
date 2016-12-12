@@ -47,6 +47,7 @@ namespace Chuye.Persistent.NHibernate {
                     EnsureTransactionBegin();
                 }
             }
+            CheckSessionFlushModel();
             return _session;
         }
 
@@ -54,9 +55,15 @@ namespace Chuye.Persistent.NHibernate {
             if (_session == null) {
                 Debug.WriteLine("(NH:Session open, count {0})", Interlocked.Increment(ref _count));
                 _session = _context.SessionFactory.OpenSession();
-                if (_config.Stragety.Require == TransactionRequire.Manual) {
-                    _session.FlushMode = FlushMode.Always;
-                }
+            }
+        }
+
+        private void CheckSessionFlushModel() {
+            if (_session.Transaction.IsActive) {
+                _session.FlushMode = FlushMode.Auto;
+            }
+            else if (_config.Stragety.Require == TransactionRequire.Manual) {
+                _session.FlushMode = FlushMode.Always;
             }
         }
 
@@ -69,10 +76,9 @@ namespace Chuye.Persistent.NHibernate {
 
         private IDisposable GetTransactionKeeper() {
             return new NHibernateTransactionKeeper(this);
-        }
+        }        
 
         private void EnsureTransactionRollback() {
-            _session.Clear();
             if (_session.Transaction.IsActive) {
                 Debug.WriteLine("(NH:Transaction rollback)");
                 _session.Transaction.Rollback();
@@ -111,9 +117,11 @@ namespace Chuye.Persistent.NHibernate {
                 return;
             }
             EnsureTransactionCommit();
-            if (_config.Stragety.Require == TransactionRequire.Essential) {
-                EnsureTransactionBegin();
-            }
+            //if (_config.Stragety.Require == TransactionRequire.Essential) {
+            //    EnsureTransactionBegin();
+            //}
+            _session.Dispose();
+            _session = null;
         }
 
         private void EnsureTransactionCommit() {
@@ -148,11 +156,18 @@ namespace Chuye.Persistent.NHibernate {
                         EnsureTransactionCommit();
                     }
                     else {
+                        Debug.WriteLine("(NH:Session flush)");
                         _session.Flush();
                     }
                 }
                 else {
-                    EnsureTransactionRollback();
+                    if (_session.Transaction.IsActive) {
+                        EnsureTransactionRollback();
+                    }
+                    else {
+                        Debug.WriteLine("(NH:Session clear)");
+                        _session.Clear();
+                    }
                 }
             }
             finally {
@@ -171,12 +186,7 @@ namespace Chuye.Persistent.NHibernate {
             }
 
             public void Dispose() {
-                //if (_unitOfWork._config.SaveUncommitted) {
-                    _unitOfWork.Commit();
-                //}
-                //else {
-                //    _unitOfWork.Rollback();
-                //}
+                _unitOfWork.Commit();
             }
         }
     }
