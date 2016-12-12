@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PetaPoco;
 
 namespace Chuye.Persistent.PetaPoco {
     public class DeferredPage<T> {

@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Threading;
-using PetaPoco;
 
 namespace Chuye.Persistent.PetaPoco {
     public class PetaPocoUnitOfWork : IUnitOfWork {

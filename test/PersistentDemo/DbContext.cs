@@ -3,6 +3,7 @@ using System.Configuration;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using Chuye.Persistent.NHibernate;
+using NHibernate.Tool.hbm2ddl;
 
 namespace PersistentDemo {
     public class DbContext : NHibernateDbContext {
@@ -25,9 +26,7 @@ namespace PersistentDemo {
                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<DbContext>())
                    .ExposeConfiguration(conf => {
 #if DEBUG
-                       if (Boolean.TrueString.Equals(ConfigurationManager.AppSettings.Get("NHibernate:recreate"), StringComparison.OrdinalIgnoreCase)) {
-                           //new SchemaExport(conf).Create(true, true);
-                       }
+                       new SchemaExport(conf).Create(true, true);
 #endif
                    })
                 .BuildConfiguration()
