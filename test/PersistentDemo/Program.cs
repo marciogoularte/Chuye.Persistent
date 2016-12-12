@@ -13,7 +13,7 @@ namespace PersistentDemo {
         static ILogger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args) {
             Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
-            AggregateLocateTest();
+            AggregateRootTest();
 
             if (Debugger.IsAttached) {
                 Console.WriteLine("Press <ENTER> to exit");
@@ -21,11 +21,11 @@ namespace PersistentDemo {
             }
         }
 
-        static void AggregateLocateTest() {
+        static void AggregateRootTest() {
             var context = new DbContext();
             using (var uow = new NHibernateUnitOfWork(context))
             using (uow.Begin()) {
-                var aggregateLocate = new NHibernateAggregateLocate(uow);
+                var aggregateRoot = new NHibernateAggregateRoot(uow);
                 var desktop = new Desktop {
                     Id = 10,
                     Title = "title#1",
@@ -41,18 +41,18 @@ namespace PersistentDemo {
                     Name = "name#2",
                     Desktop = desktop,
                 });
-                aggregateLocate.Save(desktop);
+                aggregateRoot.Save(desktop);
             }
 
             using (var uow = new NHibernateUnitOfWork(context))
             using (uow.Begin()) {
-                var aggregateLocate = new NHibernateAggregateLocate(uow);
-                var entry1 = aggregateLocate.FindById<Desktop>(10);
+                var aggregateRoot = new NHibernateAggregateRoot(uow);
+                var entry1 = aggregateRoot.RetriveByKey<Desktop>(10);
                 entry1.Title = "Title#modified";
-                aggregateLocate.Save(entry1);
+                aggregateRoot.Save(entry1);
 
-                var entry2 = aggregateLocate.FindById<Drawer>(100);
-                aggregateLocate.Delete(entry2);
+                var entry2 = aggregateRoot.RetriveByKey<Drawer>(100);
+                aggregateRoot.Delete(entry2);
             }
         }
 
@@ -87,11 +87,11 @@ namespace PersistentDemo {
                     Name = "name#3",
                 });
 
-                var drawers = repo1.FindByKeys(100, 101).ToArray();
+                var drawers = repo1.RetriveByKeys(100, 101).ToArray();
                 repo1.Delete(drawers[0]);
 
                 var repo2 = new NHibernateRepository<Desktop>(uow);
-                var desktop = repo2.FindById(10);
+                var desktop = repo2.RetriveByKey(10);
                 desktop.Title = "title#1 modified";
                 desktop.Status = GeneralType.Specific;
                 repo2.Save(desktop);

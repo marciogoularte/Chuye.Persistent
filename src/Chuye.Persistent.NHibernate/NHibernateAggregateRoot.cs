@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Chuye.Persistent.NHibernate {
-    public class NHibernateAggregateLocate : IAggregateLocate {
+    public class NHibernateAggregateRoot : IAggregateRoot {
         private readonly NHibernateUnitOfWork _unitOfWork;
 
-        public NHibernateAggregateLocate(IUnitOfWork unitOfWork) {
+        public NHibernateAggregateRoot(IUnitOfWork unitOfWork) {
             _unitOfWork = unitOfWork as NHibernateUnitOfWork;
             if (_unitOfWork == null) {
                 throw new ArgumentOutOfRangeException("context",
@@ -16,11 +16,11 @@ namespace Chuye.Persistent.NHibernate {
             }
         }
 
-        public NHibernateAggregateLocate(NHibernateUnitOfWork unitOfWork) {
+        public NHibernateAggregateRoot(NHibernateUnitOfWork unitOfWork) {
             _unitOfWork = unitOfWork;
         }
 
-        public TEntry FindById<TEntry>(Object key) {
+        public TEntry RetriveByKey<TEntry>(Object key) {
             var session = _unitOfWork.OpenSession();
             return session.Get<TEntry>(key);
         }

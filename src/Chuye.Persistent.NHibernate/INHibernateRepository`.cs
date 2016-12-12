@@ -10,7 +10,7 @@ namespace Chuye.Persistent.NHibernate {
         void Save(TEntry entry);
 
         IQueryable<TResult> All { get; }
-        TResult FindById(Object id);
-        IEnumerable<TResult> FindByKeys(Object[] keys);
+        TResult RetriveByKey(Object id);
+        IEnumerable<TResult> RetriveByKeys(params Object[] keys);
     }
 }

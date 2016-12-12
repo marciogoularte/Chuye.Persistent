@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Chuye.Persistent.PetaPoco {
-    public class PetaPocoAggregateLocate : IAggregateLocate {
+    public class PetaPocoAggregateRoot : IAggregateRoot {
         private readonly PetaPocoUnitOfWork _unitOfWork;
 
-        public PetaPocoAggregateLocate(IUnitOfWork unitOfWork) {
+        public PetaPocoAggregateRoot(IUnitOfWork unitOfWork) {
             _unitOfWork = unitOfWork as PetaPocoUnitOfWork;
             if (_unitOfWork == null) {
                 throw new ArgumentOutOfRangeException("context",
@@ -16,11 +16,11 @@ namespace Chuye.Persistent.PetaPoco {
             }
         }
 
-        public PetaPocoAggregateLocate(PetaPocoUnitOfWork unitOfWork) {
+        public PetaPocoAggregateRoot(PetaPocoUnitOfWork unitOfWork) {
             _unitOfWork = unitOfWork;
         }
 
-        public TEntry FindById<TEntry>(Object key) {
+        public TEntry RetriveByKey<TEntry>(Object key) {
             return _unitOfWork.Database.SingleOrDefault<TEntry>(key);
         }
 

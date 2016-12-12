@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Chuye.Persistent {
-    public interface IAggregateLocate {
-        TEntry FindById<TEntry>(Object key);
+    public interface IAggregateRoot {
+        TEntry RetriveByKey<TEntry>(Object key);
         void Save<TEntry>(TEntry entry);
         void Delete<TEntry>(TEntry entry);
     }

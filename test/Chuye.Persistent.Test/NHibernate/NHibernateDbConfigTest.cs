@@ -74,12 +74,16 @@ namespace Chuye.Persistent.NHibernate.Test {
             using (var uow = new NHibernateUnitOfWork(context, config)) {
                 var session = uow.OpenSession();
                 uow.Commit();
+
+                session = uow.OpenSession();
                 Assert.True(session.Transaction.IsActive);
             }
 
             using (var uow = new NHibernateUnitOfWork(context, config)) {
                 var session = uow.OpenSession();
                 uow.Rollback();
+                
+                session = uow.OpenSession();
                 Assert.True(session.Transaction.IsActive);
             }
         }

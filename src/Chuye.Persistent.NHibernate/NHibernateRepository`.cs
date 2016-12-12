@@ -8,7 +8,7 @@ using NHibernate.Criterion;
 using NHibernate.Linq;
 
 namespace Chuye.Persistent.NHibernate {
-    public class NHibernateRepository<TEntry> : INHibernateRepository<TEntry> where TEntry : class {
+    public class NHibernateRepository<TEntry> :INHibernateRepository<TEntry> where TEntry : class {
         private readonly NHibernateUnitOfWork _unitOfWork = null;
 
         public virtual IQueryable<TEntry> All {
@@ -29,12 +29,12 @@ namespace Chuye.Persistent.NHibernate {
             }
         }
 
-        public virtual TEntry FindById(Object id) {
+        public virtual TEntry RetriveByKey(Object key) {
             var session = _unitOfWork.OpenSession();
-            return session.Get<TEntry>(id);
+            return session.Get<TEntry>(key);
         }
 
-        public virtual IEnumerable<TEntry> FindByKeys(params Object[] keys) {
+        public virtual IEnumerable<TEntry> RetriveByKeys(params Object[] keys) {
             var session = _unitOfWork.OpenSession();
             var criteria = session.CreateCriteria<TEntry>();
             var metadata = _unitOfWork.Context.SessionFactory.GetClassMetadata(typeof(TEntry));
